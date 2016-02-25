@@ -1,95 +1,12 @@
 <!DOCTYPE html>
 <html>
+<head>
+
+    <script src='domready.js'></script>
+    <script src='script.js'></script>
+
+</head>
 <body style="background-color: black;">
 
-<svg version="1.1"
-     baseProfile="full"
-     xmlns="http://www.w3.org/2000/svg"
-     xmlns:xlink="http://www.w3.org/1999/xlink"
-     xmlns:ev="http://www.w3.org/2001/xml-events" width="1920px" height="1200px">
-    <title>Text Pattern Fill Example</title>
-    <defs>
-        <!-- When using objectBoundingBox as patternunit, then w/h needs to be <1 as it scales.
-            the userspaceonuse does not scale and will be anchored in window size.-->
-        <pattern id="bike" patternUnits="objectBoundingBox"  width="1" height="1">
-            <image xlink:href="../images/bike.jpg" x="0" y="0"
-                width="388" height="630" />
-        </pattern>
-
-        <!-- Adjust x & y property of image tag to set anchor (and spacing between each pattern-tile).
-            Remember to adjust pattern width and height accordingly (image size + x/y -->
-       <pattern id="carl" patternUnits="userSpaceOnUse" width="662" height="846">
-            <image xlink:href="../images/carl.jpg" x="50" y="50"
-                width="612" height="796" />
-        </pattern>
-
-       <pattern id="chick" patternUnits="userSpaceOnUse" width="536" height="840">
-            <image xlink:href="../images/chick.jpg" x="0" y="0"
-                width="536" height="840" />
-        </pattern>
-
-
-    </defs>
-    <!-- upper left -->
-    <path 
-        d="M50,50
-             l0,393
-             l301,0 
-             l0,-393 
-             l-301,0"
-        fill="url(#carl)" 
-    />
-
-    <!-- lower left -->
-    <path 
-        d="M50,453
-             l0,393
-             l301,0 
-             l0,-393
-             l-301,0"
-        fill="url(#carl)" 
-    />
-
-    <!-- upper right -->
-    <path 
-        d="M361,50
-             l0,393
-             l301,0 
-             l0,-393 
-             l-301,0"
-        fill="url(#carl)" 
-    />
-
-    <!-- lower right -->
-    <path 
-        d="M361,453
-             l0,393 
-             l301,0 
-             l0,-393 
-             l-301,0"
-        fill="url(#carl)" 
-    />
-
-    <!-- circle
-    <path   
-        d="M215,100
-             a50,50 0 1 1 -100,0 50,50 0 1 1 100,0
-             z"
-        fill="url(#carl)"
-
-    />
-
-    -->
-
-    <!-- triangle 
-    <path 
-        d="M1000, 50
-             l400,800 l-800,0 l400,-800
-             z"
-        fill="url(#chick)" 
-    />
--->
-
-</svg>
 </body>
 </html>
