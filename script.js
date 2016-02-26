@@ -1,4 +1,8 @@
 /**
+ *
+ *	Initial thoughts /  plan for scriptyfication. aka. STEP 1
+ *
+ *
  * The main tag type / element.
  *	- svg. this one needs to.. adjust ot screen size?
  *	Control all the paths it contains.
@@ -13,6 +17,65 @@
  *
  *
 **/
+
+/**
+ *	Step 2
+ *
+ *	- Create polygon(?) object for creating shapes out of paths.
+ *	
+ *	- listener to ensure that svg is synced with window size.
+ *
+ *	- Create structure object for adjusting spacing and positions of polygons?
+ *
+**/
+
+/**
+ *	STEP X!
+ *	
+ *	Use factory pattern for creating the different gallery styles?
+ *
+**/
+
+/**
+ *	Object that controls dimensions / bounds of the svg	
+ *
+ *	potato 
+ *
+**/
+function Bounds () {
+
+	this.init = this.init();
+
+}
+
+Bounds.prototype = {
+
+	constructor: Bounds,
+
+	init: function () {
+
+		window.onresize = this.response;
+
+	},
+
+	response: function () {
+
+		console.log("I am doing things when the window resizes");
+
+	}
+}
+
+var bounds = new Bounds();
+
+//Bounds.prototype.resii
+/*
+window.onresize = function () {
+
+	console.log("resized");
+
+};
+*/
+
 
 /**
  *	Starting off with global objects, enclosed namespaces later.
@@ -66,13 +129,28 @@ Svg.prototype.addPath = function (path) {
 // update / set the dimensions of svg element.
 Svg.prototype.updateDimensions = function () {
 
-	var widthStr = this.width + 'px',
-		heightStr = this.height + 'px';
+	var widthStr = (this.width) + 'px',
+		heightStr = (this.height) + 'px';
 
 
+	// adjusting the height and weight attributes will scale the svg.
+	//
+	// Problem: I want the elements to change positions relative to eachother
+	// not just change the size of the presented svg.
+	// 
 	this.svg.setAttributeNS(null, 'width', widthStr);
 	this.svg.setAttributeNS(null, 'height', heightStr);
 
+
+	// Coordinate system is related to viewBox, not h/w.
+	// The viewbox attribute defines the coordinate system within.
+	//
+	// Two first numbers represent the upper left corner, the origin if you will.
+	// The latter two is the width and height.
+	// changing the former to say "50 50" will remove 50 points from the axis's
+	// changing the actual position of an element at "x: 50 , y: 50" to "x: 0, y: 0"
+	// as 50,50 is now the new coordinate system origin.
+	this.svg.setAttributeNS(null, 'viewBox', "50 50 1920 1200");
 }
 
 /** function with the goal of updating defs element of svg.
