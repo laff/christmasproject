@@ -1,6 +1,11 @@
 /**
  *	Mission Control
  *
+ *	Stop using "this" in constructor?
+ *	Rather just put it all in an object like:
+ *	Galla.prototype = { bounds: new Bounds(), svg: .....
+ *	?
+ *
 **/
 function Galla (options) {
 
@@ -9,11 +14,14 @@ function Galla (options) {
 	// options currently only is related to svg
 	// else should probably store some values here
 	this.svg = new Svg(options);
-}
 
-Galla.prototype.init = function () {
+	/**
+	 *	Alternative init
+	 *	TODO! decide on how to initialize everything.
+	**/
+	(function (galla) {
 
-	this.bounds.init();
-
-	this.svg.init();
+		galla.bounds.init();
+		galla.svg.init();
+	})(this);
 }

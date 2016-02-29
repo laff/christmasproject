@@ -23,9 +23,6 @@ function Bounds () {
 	this.iHeight = null;
 	this.iWIdth = null;
 
-
-	// last time resize was responded to
-	this.resizeTimer = Date.now();
 	this.waiting = false;
 }
 
@@ -38,6 +35,7 @@ Bounds.prototype = {
 	init: function () {
 
 		this.setDisplay();
+		this.setInner();
 
 		window.onresize = this.response;
 		screen.orientation.onchange = this.orient;
@@ -47,7 +45,13 @@ Bounds.prototype = {
 	setDisplay: function () {
 
 		this.sHeight = screen.availHeight;
-		this.sWidth = screen.availWidth;
+		this.sWidth = screen.availWidth;	
+	},
+
+	setInner: function () {
+
+		this.iHeight = window.innerHeight;
+		this.iWidth = window.innerWidth;
 	},
 
 	/**
@@ -57,7 +61,7 @@ Bounds.prototype = {
 	 *	TODO! Add logic for everything to get new orientation.
 	**/
 	orient: function () {
-		this.setDisplay();
+		galla.setDisplay();
 	},
 
 	/**
@@ -65,22 +69,15 @@ Bounds.prototype = {
 	**/
 	response: function () {
 
-		var setViewport = function () {
+		var that = galla.bounds;
 
-			this.iHeight = window.innerHeight;
-			this.iWidth = window.innerWidth;
+		if (!that.waiting) {
 
-			this.resizeTimer = Date.now();
-			this.waiting = false;
-		};
-
-		if (!this.waiting) {
-
-			this.waiting = true;
+			that.waiting = true;
 
 			setTimeout(function () {
-
-				setViewport();
+				that.waiting = false;
+				that.setInner();
 			}, 500);
 		}
 	}

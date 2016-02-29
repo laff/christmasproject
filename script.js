@@ -37,6 +37,13 @@
 **/
 
 /**
+ *	STEP Y!
+ *
+ *	
+ *
+**/
+
+/**
  *	Starting off with global objects, enclosed namespaces later.
  *	not using es6 right off the bat, will include at later stage.
  *	Not using classes (yet?).
@@ -50,7 +57,7 @@
 **/
 DomReady.ready(function () {
 
-	var galla = new Galla({
+	galla = new Galla({
 
 			pattern: {
 
@@ -74,8 +81,5 @@ DomReady.ready(function () {
 				"M361,453 l0,393 l301,0 l0,-393 l-301,0"
 			],
 
-		}).init();
-
-
-
+		});
 });
