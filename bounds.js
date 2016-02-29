@@ -40,6 +40,7 @@ Bounds.prototype = {
 		window.onresize = this.response;
 		screen.orientation.onchange = this.orient;
 
+		return this;
 	},
 
 	setDisplay: function () {
@@ -52,6 +53,11 @@ Bounds.prototype = {
 
 		this.iHeight = window.innerHeight;
 		this.iWidth = window.innerWidth;
+
+		// TODO! figure out the best way to do these things.
+		// send variables to svg, not tell svg to pick them up here?
+		(typeof galla == "undefined") ? null : galla.svg.updateDimensions();
+		
 	},
 
 	/**
@@ -61,7 +67,7 @@ Bounds.prototype = {
 	 *	TODO! Add logic for everything to get new orientation.
 	**/
 	orient: function () {
-		galla.setDisplay();
+		(typeof galla == "undefined") ? null : galla.setDisplay();
 	},
 
 	/**
@@ -69,15 +75,13 @@ Bounds.prototype = {
 	**/
 	response: function () {
 
-		var that = galla.bounds;
+		if (!bounds.waiting) {
 
-		if (!that.waiting) {
-
-			that.waiting = true;
+			bounds.waiting = true;
 
 			setTimeout(function () {
-				that.waiting = false;
-				that.setInner();
+				bounds.waiting = false;
+				bounds.setInner();
 			}, 500);
 		}
 	}

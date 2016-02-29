@@ -3,11 +3,6 @@
 **/
 function Svg (options) {
 
-
-	this.width = 1920;
-	this.height = 1200;
-
-	
 	this.svg = null;
 
 	// The child objects for svg!
@@ -34,7 +29,9 @@ Svg.prototype.init = function () {
 	this.addPaths(this.paths.paths);
 
 
-	return this.append();
+	this.append();
+
+	return this;
 }
 
 Svg.prototype.append = function () {
@@ -66,8 +63,16 @@ Svg.prototype.addPaths = function (path) {
 // update / set the dimensions of svg element.
 Svg.prototype.updateDimensions = function () {
 
-	var widthStr = (this.width) + 'px',
-		heightStr = (this.height) + 'px';
+	var width = (bounds.iWidth - 25),
+		height = (bounds.iHeight - 25),
+		widthStr = width + 'px',
+		heightStr = height + 'px',
+
+		// TODO! work in progress this.
+		viewBoxStr = (function () {
+
+			return "0 0 " + width + " " + height;
+		})();
 
 
 	// adjusting the height and weight attributes will scale the svg.
@@ -87,7 +92,9 @@ Svg.prototype.updateDimensions = function () {
 	// changing the former to say "50 50" will remove 50 points from the axis's
 	// changing the actual position of an element at "x: 50 , y: 50" to "x: 0, y: 0"
 	// as 50,50 is now the new coordinate system origin.
-	this.svg.setAttributeNS(null, 'viewBox', "50 50 1920 1200");
+	this.svg.setAttributeNS(null, 'viewBox', viewBoxStr);
+
+	console.log(viewBoxStr);
 }
 
 /** function with the goal of updating defs element of svg.

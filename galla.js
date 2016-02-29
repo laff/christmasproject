@@ -7,21 +7,16 @@
  *	?
  *
 **/
-function Galla (options) {
 
-	this.bounds = new Bounds();
+// I want this run first.
+// global variable tooo
+var bounds = new Bounds().init();
+
+console.log(bounds);
+
+function Galla (options) {
 
 	// options currently only is related to svg
 	// else should probably store some values here
-	this.svg = new Svg(options);
-
-	/**
-	 *	Alternative init
-	 *	TODO! decide on how to initialize everything.
-	**/
-	(function (galla) {
-
-		galla.bounds.init();
-		galla.svg.init();
-	})(this);
+	this.svg = new Svg(options).init();
 }
