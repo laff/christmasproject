@@ -28,7 +28,6 @@ Svg.prototype.init = function () {
 
 	this.addPaths(this.paths.paths);
 
-
 	this.append();
 
 	return this;
