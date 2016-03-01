@@ -9,7 +9,7 @@ function Svg (options) {
 	this.defs = null;
 	this.paths = null;
 
-	this.pattern = options.pattern;
+	this.pattern = options.patterns[0];
 	this.pathStrings = options.pathStrings;
 }
 
