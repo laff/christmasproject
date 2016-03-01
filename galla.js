@@ -7,14 +7,11 @@
  *	?
  *
 **/
-
-// I want this run first.
-// global variable tooo
-var bounds = new Bounds().init();
-
 function Galla (options) {
 
 	// options currently only is related to svg
 	// else should probably store some values here
 	this.svg = new Svg(options).init();
+
+	bounds.setImages(options.patterns);
 }

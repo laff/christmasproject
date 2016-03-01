@@ -24,6 +24,13 @@ function Bounds () {
 	this.iWIdth = null;
 
 	this.waiting = false;
+
+
+
+	// this is called patterns elsewhere
+	// the jury is still out
+	this.images = null;
+
 }
 
 /**
@@ -86,24 +93,112 @@ Bounds.prototype = {
 		// 
 		// First time setInner is called, there is no "galla" object.
 		// the initiation of the galla object calls udpateDimensions itself.
-		(typeof galla == "undefined") ? null : galla.svg.updateDimensions();
+		//(typeof galla == "undefined") ? null : galla.svg.updateDimensions();
 
 
 		// NEW LOGIC!
 		// for creating frames! When done can scrap the stuff above & imitate the logic elsewhere.
-		this.frameup();
+		//(typeof galla == "undefined") ? null : this.frameup();
+
+
+		// The following is logic that only serves any purpose once the Galla object is instantiated.
+		if (typeof galla != "undefined") {
+
+			galla.svg.updateDimensions();
+			this.frameup();
+		}
 	},
 
 	/**
 	 *	Consider size of available space, create frames.
 	 *	Frames should be based on options, currently going fixed.
 	 *
+	 *	The frames have stuff in common, they have a "top level" division
+	 *	The following is a "study" based on the inspirational pictures.
+	 *	
+	 *
+	 *	1. Top level ways of dividing the frames.
+	 *		- vertical splits into 3.
+	 *		- diagonal split in 2 (vertical, based on the top/bottom sides, not the corners).
+	 *		- diagnoal split in 3 (same as above).
+	 *
+	 *	2. Second level way of dividing the divided frames!
+	 *		- horisontal splits
+	 *		- diagonal (horisontally directed) splits
+	 *		- 1st and 3rd frames have child frames with common angles.
+	 *
+	 *	3. Can any window proportions display any kind of frame composition?
+	 *		- TODO! Find out.
+	 *
+	 *
+	 *	4. Should the frame composition be dynamic?
+	 *		- Can be based on amount of pictures.
+	 *			* amount of frames
+	 *			* spacing between frames
+	 *			* spacing between frames & window
+	 *			* change size of images to fit.
+	 *		
+	 *		- As pictures differ in dimensions, some might fit better certain places.
+	 *		Deciding where to put each image is probably easier pre-frameup,
+	 *		but then one need to know the frame composition before hand. Right?
+	 *		Meaning that the data sent to the Galla object is gonna be way bigger.
+	 *
+	 *
+	 *	5. Should the frame composition be fixed?
+	 *		- More complex API.
+	 *		- If API options is ommitted, dynamic logic will be needed.
+	 *		- For the API to have any future, it needs to be simple..
+	 *
 	 *	The data created by this method will make the foundations of the path creations.
+	**
+	 *
+	 *	Do I want to start using function declarations instead of impressions?
+	 *	This way variables and functions are divided & may be easies to read vs :
+
+	var hi = 1,
+		ho = 2,
+		yo = function () {
+			return "wall of text";
+			},
+		br0 = function () {
+			console.log(yo());
+			};
+	 *
+	 *
+	 *	Am I being zzz?
+	 *
+	 *
+	 *	TODO! add suitable values of function "frameup()" to some default value variety.
 	**/
 	frameup: function () {
 
-		console.log("I am all the logic for frames");
 
+		// The first information to consider is the dimensions available.
+		//
+		// What picture fits where?
 
+		var border = 50,
+			spacing = 10,
+			width = (this.iWidth - border*2),
+			height = (this.iHeight - border*2),
+			images = this.images,
+			len = images.length;
+
+			console.log(len);
+
+/*
+		while (len--) {
+
+			console.log(images[len]);
+		}
+		*/
+	},
+
+	// TODO! track down all the pattern related information that is doubled up.
+	setImages: function (images) {
+
+		this.images = images;
+
+		this.frameup();
 	}
 }

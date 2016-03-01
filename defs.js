@@ -7,7 +7,7 @@ function Defs (svg) {
 
 	// storing that svg!
 	this.svg = svg;
-	this.pattern = svg.pattern;
+	this.pattern = svg.patterns[0];
 
 	this.defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
 
@@ -21,6 +21,9 @@ Defs.prototype.init = function () {
 
 	// TODO! initial pattern adddddddddd?
 	// should there be multiple patterns, this guy needs to evolve.
+	//
+	// some logic added to bounds.
+	
 	this.addPattern(this.pattern);
 
 	this.updateDefs();

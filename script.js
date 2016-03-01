@@ -50,9 +50,12 @@
 **/
 
 
+// I want this run first.
+// global variable tooo
+var bounds = new Bounds().init();
+
 /**
- *	cba creating vanilla domready.
- *	using what is claimed to be the smallest subset of the jQuery dom ready event listener.
+ * using what is claimed to be the smallest subset of the jQuery dom ready event listener.
  *
 **/
 DomReady.ready(function () {

@@ -9,7 +9,10 @@ function Svg (options) {
 	this.defs = null;
 	this.paths = null;
 
-	this.pattern = options.patterns[0];
+	// any reason to store this variable here?
+	// apart from passing it along?
+	this.patterns = options.patterns;
+
 	this.pathStrings = options.pathStrings;
 }
 
