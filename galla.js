@@ -12,8 +12,6 @@
 // global variable tooo
 var bounds = new Bounds().init();
 
-console.log(bounds);
-
 function Galla (options) {
 
 	// options currently only is related to svg

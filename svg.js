@@ -92,8 +92,6 @@ Svg.prototype.updateDimensions = function () {
 	// changing the actual position of an element at "x: 50 , y: 50" to "x: 0, y: 0"
 	// as 50,50 is now the new coordinate system origin.
 	this.svg.setAttributeNS(null, 'viewBox', viewBoxStr);
-
-	console.log(viewBoxStr);
 }
 
 /** function with the goal of updating defs element of svg.

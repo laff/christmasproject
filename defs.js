@@ -64,6 +64,9 @@ Defs.prototype.addPattern = function (pattern) {
 	// image related settin
 	// TODO! figure out what why and if not 'xlink'
 	img.setAttributeNS('http://www.w3.org/1999/xlink', 'href', image.href);
+
+	// TODO! Create functionality that adjusts the image to the
+	// frames or frames created / assigned to it!
 	img.setAttributeNS(null, 'x', image.x);
 	img.setAttributeNS(null, 'y', image.y);
 	img.setAttributeNS(null, 'width', image.width);

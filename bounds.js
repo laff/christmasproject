@@ -43,31 +43,15 @@ Bounds.prototype = {
 		return this;
 	},
 
-	setDisplay: function () {
-
-		this.sHeight = screen.availHeight;
-		this.sWidth = screen.availWidth;	
-	},
-
-	setInner: function () {
-
-		this.iHeight = window.innerHeight;
-		this.iWidth = window.innerWidth;
-
-		// TODO! figure out the best way to do these things.
-		// send variables to svg, not tell svg to pick them up here?
-		(typeof galla == "undefined") ? null : galla.svg.updateDimensions();
-		
-	},
-
 	/**
 	 *	event triggered on screen orientation change.
 	 *	atm only calls setDisplay to adjust to the new "screen size".
 	 *
-	 *	TODO! Add logic for everything to get new orientation.
+	 *	TODO! Add logic for everything to get new orientation,
+	 *	like flipping images etc...
 	**/
 	orient: function () {
-		(typeof galla == "undefined") ? null : galla.setDisplay();
+		bounds.setDisplay();
 	},
 
 	/**
@@ -84,5 +68,42 @@ Bounds.prototype = {
 				bounds.setInner();
 			}, 500);
 		}
+	},
+
+	setDisplay: function () {
+
+		this.sHeight = screen.availHeight;
+		this.sWidth = screen.availWidth;	
+	},
+
+	setInner: function () {
+
+		this.iHeight = window.innerHeight;
+		this.iWidth = window.innerWidth;
+
+		// TODO! figure out the best way to do these things.
+		// send variables to svg, not tell svg to pick them up here?
+		// 
+		// First time setInner is called, there is no "galla" object.
+		// the initiation of the galla object calls udpateDimensions itself.
+		(typeof galla == "undefined") ? null : galla.svg.updateDimensions();
+
+
+		// NEW LOGIC!
+		// for creating frames! When done can scrap the stuff above & imitate the logic elsewhere.
+		this.frameup();
+	},
+
+	/**
+	 *	Consider size of available space, create frames.
+	 *	Frames should be based on options, currently going fixed.
+	 *
+	 *	The data created by this method will make the foundations of the path creations.
+	**/
+	frameup: function () {
+
+		console.log("I am all the logic for frames");
+
+
 	}
 }

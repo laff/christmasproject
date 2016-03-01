@@ -63,14 +63,14 @@ DomReady.ready(function () {
 
 				id: 'carl',
 				patternUnits: 'userSpaceOnUse',
-				width: '662',
-				height: '846',
+				width: 662,
+				height: 846,
 				image: {
 					href: '../images/carl.jpg',
-					x: '50',
-					y: '50',
-					width: '612',
-					height: '796'
+					x: 50,
+					y: 50,
+					width: 612,
+					height: 796
 				}
 			}, {
 
