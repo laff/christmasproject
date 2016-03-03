@@ -9,9 +9,11 @@
 **/
 function Galla (options) {
 
+	// TODO! clean up.
+	bounds.setImages(options.patterns);
+
 	// options currently only is related to svg
 	// else should probably store some values here
 	this.svg = new Svg(options).init();
 
-	bounds.setImages(options.patterns);
 }

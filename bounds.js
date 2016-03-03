@@ -31,6 +31,8 @@ function Bounds () {
 	// the jury is still out
 	this.images = null;
 
+	// array simulating the structure of frames.
+	this.structure = null;
 }
 
 /**
@@ -105,7 +107,10 @@ Bounds.prototype = {
 		if (typeof galla != "undefined") {
 
 			galla.svg.updateDimensions();
-			this.frameup();
+
+			console.log("bounds just called updatedimensions!");
+
+			//this.frameup();
 		}
 	},
 
@@ -182,16 +187,121 @@ Bounds.prototype = {
 			width = (this.iWidth - border*2),
 			height = (this.iHeight - border*2),
 			images = this.images,
-			len = images.length;
+			imageCount = images.length,
+			gridArr;
 
-			console.log(len);
 
-/*
-		while (len--) {
+		/**
+		 *	function that returns random number between min and max.
+		 *	consider putting this higher up the chain
+		**/
+		function rand (min, max) {
 
-			console.log(images[len]);
+			return Math.floor(Math.random() * (max - min)) + min;
 		}
-		*/
+
+		/**
+		 *	categorizes images based on their dimensions.
+		 *	This information will be used when placing images in frames created.
+		 *	types:
+		 *	- 'vertical' : vertical rectangle
+		 *	- 'horizontal' : horisontal rectangle
+		 *	- 'square' : squareish rectangle.
+		 *
+		 * TODO! Decide on moving variables somewhere central (squarish and types)
+		**/
+		function categorize () {
+			// if the width is 20% (of width) longer than the height,
+			// then its a legit horisontal rectangle.
+			var w,
+				h,
+				squareish = .2,
+				l = imageCount;
+
+			while (l--) {
+				w = images[l].width;
+				h = images[l].height;
+				images[l].orientation = ((w - h) > (w * squareish)) ? 'horizontal' : ((h - w) > (h * squareish)) ? 'vertical' : 'square';
+			}
+
+			return grid();
+		}
+
+
+		/**
+		 *	Decide on how many columns and rows to create.
+		 *
+		 *	Sample pictures / inspiration:
+		 *	- 7 images, 2 columns, 3-4 rows
+		 *	- 13 images, 3 columns, 2-3 rows (internal columns :S) TODO, decide on where to add internal columns.
+		 *	- 9 images, 3 columns, 2-3 rows
+		 *	- 9 images, 3 columns, 2-4 rows
+		 *
+		 *	What are the commonalities..
+		 *	Never more than 2 more rows than columns. never more columns than rows.
+		 *
+		 *	square root of each image counts, removing decimals, give column count
+		 *
+		 *	for each column, sum sum sum up to image count by adding columncount + (Math.rand(2) until images = sum of rows.
+		 *	
+		**/
+		function grid () {
+
+			var columnCount = Math.floor(Math.sqrt(imageCount)),
+				columns = [],
+				cc = columnCount,
+				imgC = (imageCount - (columnCount * 2)),
+				tmp;
+
+
+			/**
+			 *	gets the current framecount
+			**/
+			function frameCount () {
+
+				var i = columnCount,
+					count = 0;
+
+				while (i--) {
+					count += columns[i];
+				}
+
+				return count;
+			}
+
+			/**
+			 *	Adds rows to each column until there is no more images that needs frames
+			 *
+			**/
+			function addRows () {
+
+				var i = columnCount,
+					diff;
+
+				while (i--) {
+
+					tmp = (imgC < 2) ? imgC : rand(0,2);
+					columns[i] += tmp;
+					imgC -= tmp;
+				}
+
+				if (imgC && (frameCount() < imageCount)) {
+					addRows();
+				}
+			}
+
+			// set row count to the minimum.
+			while (cc--) {
+				columns[cc] = columnCount;
+			}
+
+			addRows();
+
+			return columns;
+		}
+
+		// sorting images
+		return categorize();
 	},
 
 	// TODO! track down all the pattern related information that is doubled up.
@@ -199,6 +309,7 @@ Bounds.prototype = {
 
 		this.images = images;
 
-		this.frameup();
+		this.structure = this.frameup();
+
 	}
 }
