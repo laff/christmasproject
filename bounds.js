@@ -21,7 +21,7 @@ function Bounds () {
 	// These are the window viewport values.
 	// use this to responsify the created svg size!
 	this.iHeight = null;
-	this.iWIdth = null;
+	this.iWidth = null;
 
 	this.waiting = false;
 
@@ -190,15 +190,6 @@ Bounds.prototype = {
 			imageCount = images.length,
 			gridArr;
 
-
-		/**
-		 *	function that returns random number between min and max.
-		 *	consider putting this higher up the chain
-		**/
-		function rand (min, max) {
-
-			return Math.floor(Math.random() * (max - min)) + min;
-		}
 
 		/**
 		 *	categorizes images based on their dimensions.

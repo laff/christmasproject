@@ -9,6 +9,8 @@ function Svg (options) {
 	this.defs = null;
 	this.paths = null;
 
+	this.frame = null;
+
 	// any reason to store this variable here?
 	// apart from passing it along?
 	this.patterns = options.patterns;
@@ -32,6 +34,10 @@ Svg.prototype = {
 		this.defs = new Defs(this);
 		this.defs.init();
 
+
+		// TODO! Figure out where to actually use init() functions..
+		// Inside classes they're atlest a bit useful for readability.
+		//this.frame = new Frame();
 
 		// TODO! this entire path logic needs to be cleaned up
 		this.paths = new Path(this.pathStrings);

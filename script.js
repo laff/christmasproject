@@ -50,6 +50,15 @@
 **/
 
 
+/**
+ *	function that returns random number between min and max.
+ *	I want this do be in available to the entire application
+**/
+function rand (min, max) {
+
+	return Math.floor(Math.random() * (max - min)) + min;
+}
+
 // I want this run first.
 // global variable tooo
 var bounds = new Bounds().init();
@@ -155,11 +164,13 @@ DomReady.ready(function () {
 			}],
 
 			pathStrings: [
-				"M50,50 l0,393 l301,0 l0,-393 l-301,0",
-				"M50,453 l0,393 l301,0 l0,-393 l-301,0",
-				"M361,50 l0,393 l301,0 l0,-393 l-301,0",
-				"M361,453 l0,393 l301,0 l0,-393 l-301,0"
+				"M50,50 l0,393 l301,0 l0,-393 l-301,0",	// upper left
+				"M50,453 l0,393 l301,0 l0,-393 l-301,0", // lower left
+				"M361,50 l0,393 l301,0 l0,-393 l-301,0", // upper right
+				"M361,453 l0,393 l301,0 l0,-393 l-301,0" // lower right
 			],
 
 		});
+
+	galla.init();
 });

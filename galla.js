@@ -9,11 +9,37 @@
 **/
 function Galla (options) {
 
-	// TODO! clean up.
+	// TODO! Clean up this.
+	// I seem to be storing these options all over the place.
+	this.options = options;
+
+	// setImages is a misleading name. 
+	// makes so that images are categorized and numbers for frames.
 	bounds.setImages(options.patterns);
 
-	// options currently only is related to svg
-	// else should probably store some values here
-	this.svg = new Svg(options).init();
+	//this.svg = new Svg(options).init();
 
+	this.svg = null;
+
+	this.frame = null
+
+	//this.init();
+}
+
+Galla.prototype.init = function () {
+
+
+	var options = this.options,
+		svg;
+
+
+	// self executing function that returns a new frame.
+	// the function is passed the creation & setting of the new svg as an argument.
+	// this is evaluated before the function is executed.
+	// making the new Svg available to the frame.
+	this.frame = (function () {
+		
+			return new Frame();
+		}
+	)(this.svg = new Svg(options).init());
 }
