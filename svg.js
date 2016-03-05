@@ -45,6 +45,7 @@ Svg.prototype = {
 		this.paths.init();
 
 		// to be called when paths have been created.
+		// this adds the paths to the svg.
 		// preferrably one by one.
 		this.addPaths(this.paths.paths);
 

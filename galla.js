@@ -37,9 +37,9 @@ Galla.prototype.init = function () {
 	// the function is passed the creation & setting of the new svg as an argument.
 	// this is evaluated before the function is executed.
 	// making the new Svg available to the frame.
-	this.frame = (function () {
+	this.frames = (function () {
 		
-			return new Frame();
+			return new Frames();
 		}
 	)(this.svg = new Svg(options).init());
 }
