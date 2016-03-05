@@ -7,7 +7,7 @@
  *
  *	Passing the fill variable made out of hte pattern chosen.
 **/
-function Path (pathStrings) {
+function Path (pathStr) { //pathStrings) {
 
 	this.paths = [];
 
@@ -15,9 +15,13 @@ function Path (pathStrings) {
 	// based on patterns!
 	this.fill = "url(#carl";
 
-	this.pathStrings = pathStrings;
+	//this.pathStrings = pathStrings;
 
-	
+
+
+	this.element = this.create(pathStr);
+
+		
 }
 
 Path.prototype = {
@@ -54,6 +58,8 @@ Path.prototype = {
 		path.setAttributeNS(null, 'd', str);
 		path.setAttributeNS(null, 'fill', this.fill);
 
-		this.paths.push(path);
+		this.element = path;
+
+		return path;
 	}
 }

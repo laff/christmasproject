@@ -36,8 +36,16 @@ Frame.prototype = {
 		}
 
 
-		//this.path = new Path(pathStr);
 
+		this.addPath(new Path(pathStr));
+	},
+
+	// function that adds path to svg
+	addPath: function (path) {
+
+		this.path = path;
+
+		galla.svg.addPath(path.element);
 	},
 
 	/**

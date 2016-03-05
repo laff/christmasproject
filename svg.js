@@ -40,14 +40,14 @@ Svg.prototype = {
 		//this.frame = new Frame();
 
 		// TODO! this entire path logic needs to be cleaned up
-		this.paths = new Path(this.pathStrings);
+		//this.paths = new Path(this.pathStrings);
 
-		this.paths.init();
+		//this.paths.init();
 
 		// to be called when paths have been created.
 		// this adds the paths to the svg.
 		// preferrably one by one.
-		this.addPaths(this.paths.paths);
+		//this.addPaths(this.paths.paths);
 
 		this.append();
 
@@ -79,6 +79,12 @@ Svg.prototype = {
 		while (i--) {
 			this.svg.appendChild(path[i]);
 		}
+	},
+
+	addPath: function (path) {
+
+		this.svg.appendChild(path);
+
 	},
 
 	updateDimensions: function () {
