@@ -3,7 +3,7 @@
 **/
 function Frame (vertices) {
 
-	this.vertices = vertices;
+	this.vertices = vertices || [{x: 0, y: 0}];
 
 	this.createPath();
 
@@ -21,21 +21,32 @@ Frame.prototype = {
 
 		// first assemble the pathstring!
 
+		// TODO! this function needs a new home. also found in frames.js
+		function getDistance (point1, point2) {
+
+			var A = (point1.x >= point2.x && point1.y >= point2.y) ? point2 : point1,
+				B = (point1.x >= point2.x && point1.y >= point2.y) ? point1 : point2,
+				distanceAB = Math.sqrt((Math.pow((B.x - A.x), 2)) + (Math.pow((B.y - A.y), 2)));
+
+			return distanceAB;
+		}
+
 		var vert = this.vertices,
 			len = vert.length,
-			i = 0,
+			i = 1,
+			org = vert[0],
 			prefix,
-			pathStr = '';
+			// anchor
+			pathStr = 'M' + org.x + ',' + org.y + ' ';
+
+			console.log(org);
 
 		for (i; i < len; i++) {
 
-			prefix = (i) ? 'l' : 'M';
-
-			pathStr += prefix + vert[i].x + ',' + vert[i].y + ' ';
-
+			pathStr += 'l' + (vert[i].x - vert[i-1].x) + ',' + (vert[i].y - vert[i-1].y) + ' ';
 		}
 
-
+		pathStr += 'l' + (vert[len-1].x - vert[0].x) + ',' + (vert[len-1].y - vert[0].y);
 
 		this.addPath(new Path(pathStr));
 	},

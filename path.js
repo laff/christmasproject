@@ -13,7 +13,7 @@ function Path (pathStr) { //pathStrings) {
 
 	// TODO this needs to be dynamic yall.
 	// based on patterns!
-	this.fill = "url(#carl";
+	this.fill = "url(#carl)";
 
 	//this.pathStrings = pathStrings;
 
