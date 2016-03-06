@@ -83,6 +83,7 @@ Frames.prototype = {
 
 			part = rand(min, max);
 
+			// FIRST UPPER CORNER OF FIRST COLUMN
 			// upper left corner
 			p1 = {x: border, y: border};
 			
@@ -109,6 +110,8 @@ Frames.prototype = {
 
 			this.coordinates.cols.push([p1, p2, p3, p4]);
 
+			console.log("two columns created. implement dynamic columns!");
+
 		} else {
 			console.log("I gon ran outta d");
 		}
@@ -126,12 +129,12 @@ Frames.prototype = {
 			width,
 			spacing = this.spacing,
 			c = coord.cols.length,
-			i = 0;
+			i = c;
 
 		/**
 		 *	Function that creates rows within a column.
 		**/
-		function rowCreate (nr) {
+		function rowsCreate (nr) {
 
 			// need to calculate the height of the sides based on coordinates.
 			var height = (nr) ?
@@ -140,15 +143,13 @@ Frames.prototype = {
 				rows = rowCount[nr],
 				// the height of the svg minus the spacings
 				newHeight = (height - (spacing * rows)),
-
 				// each part height before random add.
 				part = ((newHeight * .7) / rows),
-
 				// what is left over, the maximum of adds that can be made
 				diff = (newHeight * .3);
 
 			/**
-			 *	Function that decides the lenghts of one side of a column.
+			 *	Function that decides all the lenghts of one side of a column.
 			 *
 			 *	Returns array
 			**/
@@ -166,20 +167,20 @@ Frames.prototype = {
 					randoLength(arr, (rowNr + 1), 0, (part + left)) :
 				arr;
 			}
-
-			lengths[nr] = [randoLength([], 0, diff), randoLength([], 0, diff)];
-
-			return (nr < (c - 1)) ? rowCreate(nr + 1) : null;
+			lengths[nr] = {left: randoLength([], 0, diff), right: randoLength([], 0, diff)};
 		}
 
-		rowCreate(0);
+		// Calling rowsCreate on each column.
+		while (i--) {
+			rowsCreate(i);
+		}
 	},
 
 	/**
 	 *	parses the stored info gathered and creates new Frame objects.
 	 *
 	 *
-	 *	TODO make it so that there are identical / matching frames on every second column.
+	 *	TODO make it so that there are identical / matching frames on every second(?) column.
 	 *
 	**/
 	createFrames: function () {
@@ -217,21 +218,55 @@ Frames.prototype = {
 				return pointX;
 			}
 
+
+			/**
+			 *	A function that creates a frame.
+			 *
+			 *	It takes the lower two points of the last frame crated
+			 *	OR the upper two points of the column.
+			 *
+			 *	Using the lengths of each side provided by the lengths array.
+			 *	Also takes the relevant sides of the frame.
+			 *
+			 *	Either way it creates four coordinates representing a frame.
+			 *
+			 *	
+			**/
+			function frameCreate (point1, point2, left, right) {
+
+				// using pointOnLine to add spacing to next frame???
+
+				var p1 = point1, // at the first run this would be column[0]
+					p2 = pointOnLine(left, point1, column[1]),
+					p3 = pointOnLine(right, column[2], point2),
+					p4 = point2;
+
+				frameArr.push(new Frame([p1, p2, p3, p4]));
+
+			}
+
+
+			frameCreate(column[0], column[3], parts.left[0], parts.right[0]);
+
+
+			/**
+
 			// first point is easy FOR NOW. 
 			var p1 = column[0],
-
 
 				// pretty straight forward finding the lower left point.
 				// parts[0 = left side][0 = first frame]
 				// parts[1 = right side][0 = first frame]
-				p2 = pointOnLine(parts[0][0], column[0], column[1]),
+				p2 = pointOnLine(parts.left[0], column[0], column[1]),
 
-				p3 = pointOnLine(parts[1][0], column[2], column[3]);
+				p3 = pointOnLine(parts.right[0], column[2], column[3]);
 
 				// finding upper right is easy.. right?
 				p4 = column[3];
 
 				frameArr.push(new Frame([p1, p2, p3, p4]));
+
+			**/
 		}
 
 

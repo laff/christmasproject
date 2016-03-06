@@ -39,8 +39,6 @@ Frame.prototype = {
 			// anchor
 			pathStr = 'M' + org.x + ',' + org.y + ' ';
 
-			console.log(org);
-
 		for (i; i < len; i++) {
 
 			pathStr += 'l' + (vert[i].x - vert[i-1].x) + ',' + (vert[i].y - vert[i-1].y) + ' ';
