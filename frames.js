@@ -78,11 +78,10 @@ Frames.prototype = {
 		// starting off easy, brain hurts
 		if (cols == 2) {
 
-			part = (width * .2);
-			min = (part * 2);
-			max = (part * 2);
-			part = rand(min, max);
+			min = (width * .4);
+			max = (width * .6);
 
+			part = rand(min, max);
 
 			// upper left corner
 			p1 = {x: border, y: border};
