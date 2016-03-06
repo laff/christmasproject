@@ -136,43 +136,96 @@ Frames.prototype = {
 		**/
 		function rowsCreate (nr) {
 
-			// need to calculate the height of the sides based on coordinates.
-			var height = (nr) ?
-					(coord.cols[nr][1].y - coord.cols[nr][0].y) : (coord.cols[nr][2].y - coord.cols[nr][3].y),
 
-				rows = rowCount[nr],
-				// the height of the svg minus the spacings
-				newHeight = (height - (spacing * rows)),
-				// each part height before random add.
-				part = ((newHeight * .7) / rows),
-				// what is left over, the maximum of adds that can be made
-				diff = (newHeight * .3);
+			// TODO! this function needs a new home. also found in frame.js
+			function getDistance (point1, point2) {
+
+				var A = (point1.x >= point2.x && point1.y >= point2.y) ? point2 : point1,
+					B = (point1.x >= point2.x && point1.y >= point2.y) ? point1 : point2,
+					distanceAB = Math.sqrt((Math.pow((B.x - A.x), 2)) + (Math.pow((B.y - A.y), 2)));
+
+				return distanceAB;
+			}
 
 			/**
 			 *	Function that decides all the lenghts of one side of a column.
 			 *
 			 *	Returns array
 			**/
-			function randoLength (arr, rowNr, left, tmp) {
+			function randLength (data) {
 
-				var r = rand(0, left);
+				var arr = [],
+					i = 0,
+					sum = 0,
+					part,
+					addMax,
+					left,
+					rlen;
 
-				if (tmp) {
-					arr.push(tmp);
+				if (data.length < 0 || data.part < 0 || data.add < 0) {
+					console.log(data);
 				}
 
-				return (left > 0) ?
-					(rowNr < (rows - 1)) ?
-						randoLength(arr, (rowNr + 1), (left - r), (part + r)) :
-					randoLength(arr, (rowNr + 1), 0, (part + left)) :
-				arr;
+				for (i; i < rows; i++) {
+
+					left = (data.length - sum);
+
+					addMax = (left > data.add) ? data.add : left;
+
+					rlen = rand(0, addMax);
+
+					part = (i == (rows - 1)) ? left : (data.part + rlen);
+
+					sum += part;
+
+					arr.push(part);
+				}
+
+				return arr;
 			}
-			lengths[nr] = {left: randoLength([], 0, diff), right: randoLength([], 0, diff)};
+
+			var rows = rowCount[nr],
+
+				leftLength = getDistance(coord.cols[nr][0], coord.cols[nr][1]),
+				rightLength = getDistance(coord.cols[nr][2], coord.cols[nr][3]),
+				leftNewLength = (leftLength - (spacing * rows)),
+				rightNewLength = (rightLength - (spacing * rows)),
+
+				
+				leftPart = ((leftNewLength / rows) * .8),
+				rightPart = ((rightNewLength / rows) * .8),
+				leftAdd = ((leftNewLength / rows) * .2),
+				rightAdd = ((rightNewLength /rows) * .2),
+
+				leftData = {
+					length: leftNewLength,
+					part: leftPart,
+					add: leftAdd
+				},
+
+				rightData = {
+					length: rightNewLength,
+					part: rightPart,
+					add: rightAdd
+				};
+
+
+
+			lengths[nr] = {
+				left: 
+					randLength(leftData), 
+				right:
+					randLength(rightData)
+			};
 		}
 
 		// Calling rowsCreate on each column.
-		while (i--) {
-			rowsCreate(i);
+		var j = 0;
+
+		for (j; j < i; j++) {
+
+			rowsCreate(j);
+
 		}
 	},
 
@@ -189,6 +242,7 @@ Frames.prototype = {
 			len = cols.length,
 			lengths = this.lengths,
 			frameArr = this.frameArr,
+			spacing = this.spacing,
 			i = 0;
 
 
@@ -202,9 +256,14 @@ Frames.prototype = {
 			**/
 			function pointOnLine (distance, point1, point2) {
 
+
+				if (!distance) {
+					return point1;
+				}
+
 				// using vectors
 				// k = (distance / distanceAB)
-				// C = B - k(B - A).
+				// C = A - k(A - B).
 				// pointX = point2 - k * ( point1 - point2 )
 
 				var A = (point1.x >= point2.x && point1.y >= point2.y) ? point2 : point1,
@@ -213,7 +272,10 @@ Frames.prototype = {
 
 					k = (distance / distanceAB),
 
-					pointX = {x: (B.x - ((k * B.x) - (k * A.x))), y: (B.y - ((k * B.y) - (k * A.y)))};
+					pointX = {
+							x: (A.x - ((k * A.x) - (k * B.x))), 
+							y: (A.y - ((k * A.y) - (k * B.y)))
+						};
 
 				return pointX;
 			}
@@ -231,25 +293,6 @@ Frames.prototype = {
 			 *	Either way it creates four coordinates representing a frame.
 			 *
 			 *	
-			**/
-			function frameCreate (point1, point2, left, right) {
-
-				// using pointOnLine to add spacing to next frame???
-
-				var p1 = point1, // at the first run this would be column[0]
-					p2 = pointOnLine(left, point1, column[1]),
-					p3 = pointOnLine(right, column[2], point2),
-					p4 = point2;
-
-				frameArr.push(new Frame([p1, p2, p3, p4]));
-
-			}
-
-
-			frameCreate(column[0], column[3], parts.left[0], parts.right[0]);
-
-
-			/**
 
 			// first point is easy FOR NOW. 
 			var p1 = column[0],
@@ -267,6 +310,41 @@ Frames.prototype = {
 				frameArr.push(new Frame([p1, p2, p3, p4]));
 
 			**/
+			function frameCreate (point1, point2, left, right, nr) {
+
+				// using pointOnLine to add spacing to next frame???
+
+				//console.log(nr);
+
+
+				var space = (nr) ? spacing : 0,
+					p1 = (nr) ? pointOnLine(space, point1, column[1]) : point1, // at the first run this would be column[0]
+
+					p2 = pointOnLine(left, pointOnLine(space, p1, column[1]), column[1]), //point1, column[1]),
+
+					p3 = pointOnLine(right, column[2], point2),
+
+					p4 = (nr) ? pointOnLine(space, point2, p3) : point2;
+
+				frameArr.push(new Frame([p1, p2, p3, p4]));
+			}
+
+			//frameCreate(column[0], column[3], parts.left[0], parts.right[0]);
+
+			var rowCount = parts.right.length,
+				i = 0;
+
+			console.log(parts);
+
+			// going through each of the rows
+			for (i; i < rowCount; i++) {
+
+				var lastFrame = frameArr[frameArr.length - 1],
+					leftPoint = (i) ? lastFrame.vertices[1] : column[0],
+					rightPoint = (i) ? lastFrame.vertices[2] : column[3];
+
+				frameCreate(leftPoint, rightPoint, parts.left[i], parts.right[i], i);
+			}
 		}
 
 
