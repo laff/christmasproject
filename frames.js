@@ -29,7 +29,8 @@ Frames.prototype = {
 
 	init: function () {
 
-		// TODO! call (all of) this on resize too
+		// TODO! create similar functionality for animation / redraw on resize.
+		//
 		// currently its kind of just a step by step setup
 		// should probably redesign the chain
 		this.updateNumbers();
