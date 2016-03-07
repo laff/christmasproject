@@ -393,11 +393,22 @@ Frames.prototype = {
 				var space = (nr) ? spacing : 0,
 					p1 = (nr) ? pointOnLine(space, point1, column[1]) : point1, // at the first run this would be column[0]
 
-					p2 = pointOnLine(left, pointOnLine(space, p1, column[1]), column[1]), //point1, column[1]),
+					p2 = pointOnLine(
+						left,								// distance to the point to be found
+						p1,	// the point that is SPACING from p1 to column[1]
+						column[1]							// column[1] is the lower left point of the column
+						), //point1, column[1]),	
 
-					p3 = pointOnLine(right, column[2], point2),
+					// finding the upper right corner first. due to the spacings?
+					p4 = (nr) ? pointOnLine(space, point2, column[2]) : point2,
 
-					p4 = (nr) ? pointOnLine(space, point2, p3) : point2;
+					p3 = pointOnLine(
+							right,				// the distance
+							p4,			// lower right point of column
+							column[2]				// upper right point of previous 
+							);
+
+					
 
 				frameArr.push(new Frame([p1, p2, p3, p4]));
 			}
