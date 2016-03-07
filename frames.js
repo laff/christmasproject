@@ -38,7 +38,69 @@ Frames.prototype = {
 
 		this.createRows();
 
+		//this.checkNumbers();
+
 		this.createFrames();
+	},
+
+	checkNumbers: function () {
+
+		// TODO! this function needs a new home. also found in frame.js
+		function getDistance (point1, point2) {
+
+			var A = (point1.x >= point2.x && point1.y >= point2.y) ? point2 : point1,
+				B = (point1.x >= point2.x && point1.y >= point2.y) ? point1 : point2,
+				distanceAB = Math.sqrt((Math.pow((B.x - A.x), 2)) + (Math.pow((B.y - A.y), 2)));
+
+			return distanceAB;
+		}
+
+		var col1lengths = bounds.structure[0],
+			col2lengths = bounds.structure[1],
+			col1spacings = (this.spacing * (col1lengths - 1)),
+			col2spacings = (this.spacing * (col2lengths - 1));
+
+		var col1left = getDistance(this.coordinates.cols[0][0], this.coordinates.cols[0][1]),// - (col1spacings * this.spacing),
+			col1right = getDistance(this.coordinates.cols[0][2], this.coordinates.cols[0][3]),// - (col1spacings * this.spacing),
+			col2left = getDistance(this.coordinates.cols[1][0], this.coordinates.cols[1][1]),// - (col2spacings * this.spacing),
+			col2right = getDistance(this.coordinates.cols[1][2], this.coordinates.cols[1][3]);// - (col2spacings * this.spacing);
+
+
+		console.log("______________________________________________________");
+		console.log("column side lengths (left, right, left, right). spacings included.");
+		console.log(col1left, col1right, col2left, col2right);
+		console.log("______________________________________________________");
+
+
+
+
+
+		var	col1leftlength = col1spacings,//0,//(col1lengths * this.spacing),
+			col1rightlength = col1spacings,//0,//(col1lengths * this.spacing),
+			col2leftlength = col2spacings,//0,//(col2lengths * this.spacing),
+			col2rightlength = col2spacings;//0;//(col2lengths * this.spacing);
+
+
+		for (var i = 0; i < col1lengths; i++) {
+
+			col1leftlength += this.lengths[0].left[i];
+			col1rightlength += this.lengths[0].right[i];
+
+		}
+
+
+		for (var i = 0; i < col2lengths; i++) {
+
+			col2leftlength += this.lengths[1].left[i];
+			col2rightlength += this.lengths[1].right[i];
+
+		}
+
+		console.log("______________________________________________________");
+		console.log("length of frame sides (left, right, left, right)");
+		console.log(col1leftlength, col1rightlength, col2leftlength, col2rightlength);
+		console.log("______________________________________________________");		
+
 	},
 
 	/**
@@ -154,48 +216,59 @@ Frames.prototype = {
 			**/
 			function randLength (data) {
 
-				var arr = [],
+
+				var len = rows,
 					i = 0,
+					arr = [],
+					rlen,
+					basepart = 0,
 					sum = 0,
-					part,
-					addMax,
-					left,
-					rlen;
+					leftOverAdd = 0;
 
-				if (data.length < 0 || data.part < 0 || data.add < 0) {
-					console.log(data);
+				for (i; i < len; i++) {
+
+					if (sum >= data.length) {
+
+						console.log("__________________________________");
+						console.log("sum is now larger than total length of side!");
+						console.log("____________________________________");
+
+					} else if (i == (len - 1)) {
+
+						arr.push(data.length - sum);
+
+					} else {
+
+						basepart = data.part;
+
+						rlen = rand((data.add / 2), (data.add + leftOverAdd));
+
+						leftOverAdd += (data.add - rlen);
+
+						sum += (basepart + rlen);
+
+						arr.push(basepart + rlen);
+
+					}
 				}
-
-				for (i; i < rows; i++) {
-
-					left = (data.length - sum);
-
-					addMax = (left > data.add) ? data.add : left;
-
-					rlen = rand(0, addMax);
-
-					part = (i == (rows - 1)) ? left : (data.part + rlen);
-
-					sum += part;
-
-					arr.push(part);
-				}
-
 				return arr;
 			}
 
+
+
 			var rows = rowCount[nr],
+				spacingNr = (rows - 1),
 
 				leftLength = getDistance(coord.cols[nr][0], coord.cols[nr][1]),
 				rightLength = getDistance(coord.cols[nr][2], coord.cols[nr][3]),
-				leftNewLength = (leftLength - (spacing * rows)),
-				rightNewLength = (rightLength - (spacing * rows)),
+				leftNewLength = (leftLength - (spacing * spacingNr)),
+				rightNewLength = (rightLength - (spacing * spacingNr)),
 
 				
 				leftPart = ((leftNewLength / rows) * .8),
 				rightPart = ((rightNewLength / rows) * .8),
 				leftAdd = ((leftNewLength / rows) * .2),
-				rightAdd = ((rightNewLength /rows) * .2),
+				rightAdd = ((rightNewLength / rows) * .2),
 
 				leftData = {
 					length: leftNewLength,
@@ -333,8 +406,6 @@ Frames.prototype = {
 
 			var rowCount = parts.right.length,
 				i = 0;
-
-			console.log(parts);
 
 			// going through each of the rows
 			for (i; i < rowCount; i++) {
