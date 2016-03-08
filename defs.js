@@ -3,84 +3,108 @@
 **/
 function Defs (svg) {
 
-	this.patterns = [];
-
 	// storing that svg!
 	this.svg = svg;
-	this.pattern = svg.patterns[0];
+
+	this.patterns = svg.patterns;
+
+	this.patternCount = this.patterns.length;
 
 	this.defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
 
 }
 
-/**
- *	Init
- *
-**/
-Defs.prototype.init = function () {
+Defs.prototype = {
 
-	// TODO! initial pattern adddddddddd?
-	// should there be multiple patterns, this guy needs to evolve.
-	//
-	// some logic added to bounds.
-	
-	this.addPattern(this.pattern);
+	/**
+	 *	Init
+	 *
+	**/
+	init: function () {
 
-	this.updateDefs();
-}
+		// TODO! initial pattern adddddddddd?
+		// should there be multiple patterns, this guy needs to evolve.
+		//
+		// some logic added to bounds.
+		
+		//this.addPattern(this.pattern);
+
+		var patternCount = this.patterns.length;
+
+		while (patternCount--) {
+			this.addPattern(this.patterns[patternCount]);
+		}
 
 
-/**
- *	Function with the goal of updating the defs element of the parent svg.
-**/
-Defs.prototype.updateDefs = function () {
+		this.updateDefs();
 
-	this.svg.updateDefs(this.defs);
-}
+	},
 
-/**
- *	defs element is created.
- *	now creating pattern element (here or creating a new object?)
- *	Adding the properties of object passed.
- *
- *	TODO! figure out if there is any need for multuple images in each
- *	pattern? if so, restructure.
- *
-**/
-Defs.prototype.addPattern = function (pattern) {
+	/**
+	 *	Generator function that returns a new fill id!
+	 *
+	**/
+	fillGen: function* () {
 
-	// shortcut
-	var defs = this.defs,
-		image = pattern.image,
-		// creating image element,
-		pat = document.createElementNS('http://www.w3.org/2000/svg', 'pattern'),
-		img = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+		var i = this.patternCount,
+			id;
 
-	// all the setting
-	// can some of this be dynamic? like detectic image size?
-	// all static for now.
-	pat.setAttributeNS(null, 'id', pattern.id);
-	pat.setAttributeNS(null, 'patternUnits', pattern.patternUnits);
-	pat.setAttributeNS(null, 'width', pattern.width);
-	pat.setAttributeNS(null, 'height', pattern.height);
+		while (i--) {
+			yield this.patterns[i].id;
+		}
+	},
 
-	// image related settin
-	// TODO! figure out what why and if not 'xlink'
-	img.setAttributeNS('http://www.w3.org/1999/xlink', 'href', image.href);
+	/**
+	 *	Function with the goal of updating the defs element of the parent svg.
+	**/
+	updateDefs: function () {
+		this.svg.updateDefs(this.defs);
+	},
 
-	// TODO! Create functionality that adjusts the image to the
-	// frames or frames created / assigned to it!
-	img.setAttributeNS(null, 'x', image.x);
-	img.setAttributeNS(null, 'y', image.y);
-	img.setAttributeNS(null, 'width', image.width);
-	img.setAttributeNS(null, 'height', image.height);
+	/**
+	 *	defs element is created.
+	 *	now creating pattern element (here or creating a new object?)
+	 *	Adding the properties of object passed.
+	 *
+	 *	TODO! figure out if there is any need for multuple images in each
+	 *	pattern? if so, restructure.
+	 *
+	**/
+	addPattern: function (pattern) {
 
-	// adding image element to pattern element.
-	pat.appendChild(img);
+		// shortcut
+		var defs = this.defs,
+			image = pattern.image,
+			// creating image element,
+			pat = document.createElementNS('http://www.w3.org/2000/svg', 'pattern'),
+			img = document.createElementNS('http://www.w3.org/2000/svg', 'image');
 
-	// adding pattern element to defs element!
-	defs.appendChild(pat);
+		// all the setting
+		// can some of this be dynamic? like detectic image size?
+		// all static for now.
+		pat.setAttributeNS(null, 'id', pattern.id);
+		pat.setAttributeNS(null, 'patternUnits', pattern.patternUnits);
+		pat.setAttributeNS(null, 'width', pattern.width);
+		pat.setAttributeNS(null, 'height', pattern.height);
 
-	// calling updateDefs to.. update... defs
-	this.updateDefs();
+		// image related settin
+		// TODO! figure out what why and if not 'xlink'
+		img.setAttributeNS('http://www.w3.org/1999/xlink', 'href', image.href);
+
+		// TODO! Create functionality that adjusts the image to the
+		// frames or frames created / assigned to it!
+		img.setAttributeNS(null, 'x', image.x);
+		img.setAttributeNS(null, 'y', image.y);
+		img.setAttributeNS(null, 'width', image.width);
+		img.setAttributeNS(null, 'height', image.height);
+
+		// adding image element to pattern element.
+		pat.appendChild(img);
+
+		// adding pattern element to defs element!
+		defs.appendChild(pat);
+
+		// calling updateDefs to.. update... defs
+		this.updateDefs();
+	}
 }

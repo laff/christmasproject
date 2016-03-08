@@ -46,7 +46,10 @@ Frame.prototype = {
 
 		pathStr += 'l' + (vert[len-1].x - vert[0].x) + ',' + (vert[len-1].y - vert[0].y);
 
-		this.addPath(new Path(pathStr));
+		this.addPath(new Path(
+						pathStr,
+						galla.svg.fill.next()
+					));
 	},
 
 	// function that adds path to svg

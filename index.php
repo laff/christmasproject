@@ -1,5 +1,15 @@
 <!DOCTYPE html>
 <html>
+
+<?php
+    
+//    echo "<script>";
+//    include_once "test1.js";
+//    include_once "test2.js";
+//    include_once "test3.js";
+//    echo "</script>";
+
+?>
 <head>
 
     <script src='domready.js'></script>

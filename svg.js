@@ -34,6 +34,8 @@ Svg.prototype = {
 		this.defs = new Defs(this);
 		this.defs.init();
 
+		this.fill = this.defs.fillGen();
+
 
 		// TODO! Figure out where to actually use init() functions..
 		// Inside classes they're atlest a bit useful for readability.

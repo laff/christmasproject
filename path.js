@@ -7,13 +7,13 @@
  *
  *	Passing the fill variable made out of hte pattern chosen.
 **/
-function Path (pathStr) { //pathStrings) {
+function Path (pathStr, fill) { //pathStrings) {
 
 	this.paths = [];
 
 	// TODO this needs to be dynamic yall.
 	// based on patterns!
-	this.fill = "url(#carl)";
+	this.fill = "url(#" + fill.value + ")";
 
 	//this.pathStrings = pathStrings;
 
@@ -30,6 +30,8 @@ Path.prototype = {
 
 		// TODO this iterating stuff needs to be more sophisticated br0
 		this.iterate();
+
+		
 	},
 
 	/**
