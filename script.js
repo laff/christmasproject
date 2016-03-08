@@ -88,78 +88,78 @@ DomReady.ready(function () {
 
 				id: 'bike',
 				patternUnits: 'userSpaceOnUse',
-				width: '388',
-				height: '630',
+				width: 388,
+				height: 630,
 				image: {
 					href: '../images/bike.jpg',
-					x: '50',
-					y: '50',
-					width: '338',
-					height: '580'
+					x: 50,
+					y: 50,
+					width: 338,
+					height: 580
 				}
 			}, {
 
 				id: 'chick',
 				patternUnits: 'userSpaceOnUse',
-				width: '536',
-				height: '840',
+				width: 536,
+				height: 840,
 				image: {
 					href: '../images/chick.jpg',
-					x: '50',
-					y: '50',
-					width: '486',
-					height: '790'
+					x: 50,
+					y: 50,
+					width: 486,
+					height: 790
 				}
 			}, {
 
 				id: 'chopper',
 				patternUnits: 'userSpaceOnUse',
-				width: '922',
-				height: '629',
+				width: 922,
+				height: 629,
 				image: {
 					href: '../images/chopper.jpg',
-					x: '50',
-					y: '50',
-					width: '872',
-					height: '579'
+					x: 50,
+					y: 50,
+					width: 872,
+					height: 579
 				}
 			}, {
 
 				id: 'crew',
 				patternUnits: 'userSpaceOnUse',
-				width: '680',
-				height: '867',
+				width: 680,
+				height: 867,
 				image: {
 					href: '../images/crew.jpg',
-					x: '50',
-					y: '50',
-					width: '630',
-					height: '817'
+					x: 50,
+					y: 50,
+					width: 630,
+					height: 817
 				}
 			}, {
 				id: 'salvatore',
 				patternUnits: 'userSpaceOnUse',
-				width: '686',
-				height: '757',
+				width: 686,
+				height: 757,
 				image: {
 					href: '../images/salvatore.jpg',
-					x: '50',
-					y: '50',
-					width: '636',
-					height: '707'
+					x: 50,
+					y: 50,
+					width: 636,
+					height: 707
 				}
 			}, {
 
 				id: 'wuzimu',
 				patternUnits: 'userSpaceOnUse',
-				width: '500',
-				height: '804',
+				width: 500,
+				height: 804,
 				image: {
 					href: '../images/wuzimu.jpg',
-					x: '50',
-					y: '50',
-					width: '450',
-					height: '754'
+					x: 50,
+					y: 50,
+					width: 450,
+					height: 754
 				}
 			}],
 

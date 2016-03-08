@@ -6,21 +6,29 @@
  *	Now only static creation of paths!
  *
  *	Passing the fill variable made out of hte pattern chosen.
+ *
+ *	TODO! clean up the variables being sent to this.
 **/
-function Path (pathStr, fill) { //pathStrings) {
+function Path (anchor, pathStr, fill, dimensions) { //pathStrings) {
 
 	this.paths = [];
 
 	// TODO this needs to be dynamic yall.
 	// based on patterns!
-	this.fill = "url(#" + fill.value + ")";
+
+	this.anchor = anchor;
+
+	this.fill = fill.value;
+
+	this.fillStr = "url(#" + fill.value.id + ")";
+
+	this.dimensions = dimensions;
 
 	//this.pathStrings = pathStrings;
 
-
-
 	this.element = this.create(pathStr);
 
+	this.adjust();
 		
 }
 
@@ -32,6 +40,143 @@ Path.prototype = {
 		this.iterate();
 
 		
+	},
+
+	/**
+	 *	Method that adjusts the pattern!
+	**/
+	adjust: function () {
+
+		console.log("adjusting pattern?");
+
+		var pat = document.getElementById(this.fill.id),
+			img = pat.firstChild;
+
+
+		// need to adjust anchor by max angles of rows & columns
+		//
+		// need data related to the frame size.
+
+
+			// the x & y anchor coordinates may be wrong
+			// doing it statically  /testing.
+			// making it so that the x/y is further up&left than any of the other frame's corners.
+		var ax = (this.anchor.x * .9), 
+			ay = (this.anchor.y * .9),
+
+			aw = (this.fill.width),
+			ah = (this.fill.height),
+
+
+			// width
+			lw = (this.dimensions.topWidth > this.dimensions.bottomWidth) ?
+				this.dimensions.topWidth : this.dimensions.bottomWidth,
+
+			// finding the longest of the frame heights
+			lh = (this.dimensions.leftHeight > this.dimensions.rightHeight) ?
+				this.dimensions.leftHeight : this.dimensions.rightHeight;
+
+
+
+		// if both the shortest height and the shortest width is longer than
+		// the image height / width... scale down!
+
+		var ratio,
+			customWidth = aw,
+			customHeight = ah,
+			orientation = this.fill.orientation;
+
+
+		// only adjust if images are too big for frames? WTF?
+		// must be more than 1.111111111111 times bigger as the anchor is skewed .9!
+		if (aw > lw && ah > lh) {
+
+			console.log("image is bigger than frame");
+
+			// if height is greater than width
+			// find ratio between fill width and frame width
+			if (ah > aw) {
+				console.log("image is taller than wide");
+				ratio = (lw / aw);
+				console.log("ratio is " + ratio);
+
+
+				console.log(customHeight / customWidth);
+
+				customWidth = (aw * ratio); //lw;
+
+				customHeight = (ah * ratio);//((lw / aw) * ah);
+
+				console.log(customHeight / customWidth);
+
+			} else {
+
+				console.log("image is wider than tall");
+				ratio = (lw / aw);
+				console.log("ratio is " + ratio);
+
+				console.log(customHeight / customWidth);
+
+				customHeight = (ah * ratio);//lh;
+
+				customWidth = (aw * ratio);//((lh / ah) * aw);
+
+				console.log(customHeight / customWidth);
+
+			}
+
+			//customHeight *= 1.3;
+			//customWidth *= 1.3;
+
+
+		} else {
+
+			console.log("image is smaller than frame");
+
+			if (lh > lw) {
+				console.log("frame is taller than it is wide");
+				ratio = 0;
+				console.log("ratio is " + ratio);
+
+			} else {
+				console.log("frame is wider than it is tall");
+				ratio = 0;
+				console.log("ratio is " + ratio);
+
+				var r = (lw / aw);
+
+				aw = lw;
+				ah = (ah * r);
+
+				customWidth = aw;
+				customHeight = ah;
+
+			}
+		}
+
+
+		// pattern stuff
+		pat.setAttributeNS(null, 'width', (aw + ax));
+		pat.setAttributeNS(null, 'height', (ah + ay));
+			
+
+		// image coordinates and lengths!
+		img.setAttributeNS(null, 'x', ax);
+		img.setAttributeNS(null, 'y', ay);
+		
+		img.setAttributeNS(null, 'width', customWidth);
+		img.setAttributeNS(null, 'height', customHeight);
+
+		/*
+
+		// TODO! Create functionality that adjusts the image to the
+		// frames or frames created / assigned to it!
+		img.setAttributeNS(null, 'x', image.x);
+		img.setAttributeNS(null, 'y', image.y);
+		img.setAttributeNS(null, 'width', image.width);
+		img.setAttributeNS(null, 'height', image.height);
+		*/
+
 	},
 
 	/**
@@ -58,7 +203,7 @@ Path.prototype = {
 		var path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
 
 		path.setAttributeNS(null, 'd', str);
-		path.setAttributeNS(null, 'fill', this.fill);
+		path.setAttributeNS(null, 'fill', this.fillStr);
 
 		this.element = path;
 

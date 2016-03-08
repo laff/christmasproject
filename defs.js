@@ -50,7 +50,7 @@ Defs.prototype = {
 			id;
 
 		while (i--) {
-			yield this.patterns[i].id;
+			yield this.patterns[i];
 		}
 	},
 

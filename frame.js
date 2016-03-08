@@ -5,21 +5,24 @@ function Frame (vertices) {
 
 	this.vertices = vertices || [{x: 0, y: 0}];
 
-	this.createPath();
+	this.calcDimensions();
 
-	this.path = null;
+	this.createPath();
 
 }
 
 Frame.prototype = {
 
-	/**
-	 *	Method that returns a string based on the
-	 *	vertices
-	**/
-	createPath: function () {
+	path: null,
 
-		// first assemble the pathstring!
+	dimensions: null,
+
+	/**
+	 *	Method that calculates the dimensions of the frame.
+	 *
+	 *	Used for adjusting image / pattern size
+	**/
+	calcDimensions: function () {
 
 		// TODO! this function needs a new home. also found in frames.js
 		function getDistance (point1, point2) {
@@ -30,6 +33,30 @@ Frame.prototype = {
 
 			return distanceAB;
 		}
+
+		var vertices = this.vertices,
+			topWidth = getDistance(vertices[0], vertices[3]),
+			bottomWidth = getDistance(vertices[1], vertices[2]),
+			leftHeight = getDistance(vertices[0], vertices[1]),
+			rightHeight = getDistance(vertices[3], vertices[2]);
+
+
+		this.dimensions = {
+
+			topWidth: topWidth,
+			bottomWidth: bottomWidth,
+			leftHeight: leftHeight,
+			rightHeight: rightHeight
+		}
+	},
+
+	/**
+	 *	Method that returns a string based on the
+	 *	vertices
+	**/
+	createPath: function () {
+
+		// first assemble the pathstring!
 
 		var vert = this.vertices,
 			len = vert.length,
@@ -47,8 +74,10 @@ Frame.prototype = {
 		pathStr += 'l' + (vert[len-1].x - vert[0].x) + ',' + (vert[len-1].y - vert[0].y);
 
 		this.addPath(new Path(
+						org,
 						pathStr,
-						galla.svg.fill.next()
+						galla.svg.fill.next(),
+						this.dimensions
 					));
 	},
 
