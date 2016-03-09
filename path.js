@@ -47,10 +47,10 @@ Path.prototype = {
 	**/
 	adjust: function () {
 
-		console.log("adjusting pattern?");
+		// console.log("_____________________" +this.fill.id+ "___________________");
 
 		var pat = document.getElementById(this.fill.id),
-			img = pat.firstChild;
+			img = pat.firstChild,
 
 
 		// need to adjust anchor by max angles of rows & columns
@@ -61,7 +61,7 @@ Path.prototype = {
 			// the x & y anchor coordinates may be wrong
 			// doing it statically  /testing.
 			// making it so that the x/y is further up&left than any of the other frame's corners.
-		var ax = (this.anchor.x * .9), 
+			ax = (this.anchor.x * .9), 
 			ay = (this.anchor.y * .9),
 
 			aw = (this.fill.width),
@@ -77,10 +77,49 @@ Path.prototype = {
 				this.dimensions.leftHeight : this.dimensions.rightHeight;
 
 
+		/**
+		 *	This function finds the new width and height of the image.
+		 *
+		 *	The new image should always be 11,11111111111% bigger than the frame
+		 *	to make up for the anchor skew?
+		 *
+		 *	The image dimension which is the furthest off the frame needs to be
+		 *	prioritized? Does that work?
+		**/
+		function custom () {
+
+
+			var frameWidth = lw,
+				frameHeight = lh,
+				imageWidth = aw,
+				imageHeight = ah,
+
+				safetyRatio = 1.11111111,
+
+				widthRatio = (imageWidth / frameWidth),
+				heightRatio = (imageHeight / frameHeight),
+
+				ratio = (widthRatio < heightRatio) ? widthRatio : heightRatio;
+
+				newWidth = ((imageWidth / ratio) * safetyRatio),
+				newHeight = ((imageHeight / ratio) * safetyRatio);
+
+
+
+			// console.log(widthRatio, heightRatio);
+
+			// console.log("frame / image width: " + frameWidth + " : " + newWidth);
+			// console.log("frame / image height: " + frameHeight + " : " + newHeight);
+
+			return {width: newWidth, height: newHeight};
+		}
+
+
+		var customDimensions = custom();
 
 		// if both the shortest height and the shortest width is longer than
 		// the image height / width... scale down!
-
+/*
 		var ratio,
 			customWidth = aw,
 			customHeight = ah,
@@ -91,37 +130,37 @@ Path.prototype = {
 		// must be more than 1.111111111111 times bigger as the anchor is skewed .9!
 		if (aw > lw && ah > lh) {
 
-			console.log("image is bigger than frame");
+			//console.log("image is bigger than frame");
 
 			// if height is greater than width
 			// find ratio between fill width and frame width
 			if (ah > aw) {
-				console.log("image is taller than wide");
+				//console.log("image is taller than wide");
 				ratio = (lw / aw);
-				console.log("ratio is " + ratio);
+				//console.log("ratio is " + ratio);
 
 
-				console.log(customHeight / customWidth);
+				// console.log(customHeight / customWidth);
 
 				customWidth = (aw * ratio); //lw;
 
 				customHeight = (ah * ratio);//((lw / aw) * ah);
 
-				console.log(customHeight / customWidth);
+				// console.log(customHeight / customWidth);
 
 			} else {
 
-				console.log("image is wider than tall");
+				//console.log("image is wider than tall");
 				ratio = (lw / aw);
-				console.log("ratio is " + ratio);
+				//console.log("ratio is " + ratio);
 
-				console.log(customHeight / customWidth);
+				//console.log(customHeight / customWidth);
 
 				customHeight = (ah * ratio);//lh;
 
 				customWidth = (aw * ratio);//((lh / ah) * aw);
 
-				console.log(customHeight / customWidth);
+				// console.log(customHeight / customWidth);
 
 			}
 
@@ -131,17 +170,17 @@ Path.prototype = {
 
 		} else {
 
-			console.log("image is smaller than frame");
+			// console.log("image is smaller than frame");
 
 			if (lh > lw) {
-				console.log("frame is taller than it is wide");
+				// console.log("frame is taller than it is wide");
 				ratio = 0;
-				console.log("ratio is " + ratio);
-
+				// console.log("ratio is " + ratio);
+// 
 			} else {
-				console.log("frame is wider than it is tall");
+				// console.log("frame is wider than it is tall");
 				ratio = 0;
-				console.log("ratio is " + ratio);
+				// console.log("ratio is " + ratio);
 
 				var r = (lw / aw);
 
@@ -153,19 +192,19 @@ Path.prototype = {
 
 			}
 		}
-
+*/
 
 		// pattern stuff
-		pat.setAttributeNS(null, 'width', (aw + ax));
-		pat.setAttributeNS(null, 'height', (ah + ay));
+		pat.setAttributeNS(null, 'width', (customDimensions.width + ax));
+		pat.setAttributeNS(null, 'height', (customDimensions.height + ay));
 			
 
 		// image coordinates and lengths!
 		img.setAttributeNS(null, 'x', ax);
 		img.setAttributeNS(null, 'y', ay);
 		
-		img.setAttributeNS(null, 'width', customWidth);
-		img.setAttributeNS(null, 'height', customHeight);
+		img.setAttributeNS(null, 'width', customDimensions.width);
+		img.setAttributeNS(null, 'height', customDimensions.height);
 
 		/*
 
