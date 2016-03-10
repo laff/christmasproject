@@ -120,6 +120,52 @@ Frames.prototype = {
 		};
 	},
 
+	/**
+	 *	Method that returns an array of random lengths
+	**/
+	randLengths: function (data, len) {
+
+		var i = 0,
+			arr = [],
+			rlen,
+			basepart = 0,
+			sum = 0,
+			leftOverAdd = 0;
+
+		for (i; i < len; i++) {
+
+			if (sum >= data.length) {
+
+				console.log("__________________________________");
+				console.log("sum is now larger than total length of side!");
+				console.log("____________________________________");
+
+			} else if (i == (len - 1)) {
+
+				arr.push(data.length - sum);
+
+			} else {
+
+				basepart = data.part;
+
+				rlen = rand((data.add / 2), (data.add + leftOverAdd));
+
+				leftOverAdd += (data.add - rlen);
+
+				sum += (basepart + rlen);
+
+				arr.push(basepart + rlen);
+
+			}
+		}
+		return arr;
+	},
+
+	/**
+	 *	This is where the coordinates for the columns are created.
+	 *	
+	 *	- use same logic as createRows().
+	**/
 	createColumns: function () {
 
 		var spacing = this.spacing,
@@ -138,6 +184,63 @@ Frames.prototype = {
 			max,
 			frames = [];
 
+		// NEW LOGIC
+		var upperWidths = this.randLengths({
+					length: width,
+					part: ((width * .9) / cols),
+					add: ((width * .1) / cols)
+				},
+				cols
+			),
+
+			lowerWidths = (function () {
+				var i = upperWidths.length,
+					arr = [];
+
+				while (i--) {
+					arr.push(upperWidths[i]);
+				}
+				return arr;
+			})();
+
+		function coordinateColumns (upper, lower) {
+
+			var columnCoordinates = [],
+				len = upper.length,
+				i = 0,
+				tmpSpace,
+				tmpBorder,
+				lastUpper,
+				lastLower;
+
+			for (i; i < len; i++) {
+
+				tmpSpace = ((!!i) * spacing);
+				tmpBorder = ((!i) * border);
+				lastUpper = (i) ? columnCoordinates[i-1][3].x : 0;
+				lastLower = (i) ? columnCoordinates[i-1][2].x : 0;
+
+				columnCoordinates[i] = [
+
+					// upper left
+					{x: (tmpBorder + tmpSpace + lastUpper), y: border},
+
+					// lower left
+					{x: (tmpBorder + tmpSpace + lastLower), y: height},
+
+					// lower right
+					{x: (tmpSpace + lower[i] + lastLower), y: height},
+
+					// upper right
+					{x: (tmpSpace + upper[i] + lastUpper), y: border}
+				];
+			}
+
+			return columnCoordinates;
+		}
+
+		this.coordinates.cols = coordinateColumns(upperWidths, lowerWidths);
+/*
 		// starting off easy, brain hurts
 		if (cols == 2) {
 
@@ -154,10 +257,10 @@ Frames.prototype = {
 			p2 = {x: border, y: height};
 
 			// lower right corner
-			p3 = {x: (width - part), y: height};
+			p3 = {x: border + (width - part), y: height};
 
 			// upper right corner
-			p4 = {x: part, y: border};
+			p4 = {x: border + part, y: border};
 
 			this.coordinates.cols.push([p1, p2, p3, p4]);
 
@@ -167,9 +270,9 @@ Frames.prototype = {
 			// lower left
 			p2 = {x: (this.coordinates.cols[0][2].x + spacing), y: height};
 			// lower right
-			p3 = {x: width, y: height};
+			p3 = {x: border + width, y: height};
 			// upper right
-			p4 = {x: width, y: border};
+			p4 = {x: border + width, y: border};
 
 			this.coordinates.cols.push([p1, p2, p3, p4]);
 
@@ -178,6 +281,9 @@ Frames.prototype = {
 		} else {
 			console.log("I gon ran outta d");
 		}
+
+		console.log(this.coordinates.cols);
+		*/
 	},
 
 	/**
@@ -192,13 +298,13 @@ Frames.prototype = {
 			width,
 			spacing = this.spacing,
 			c = coord.cols.length,
-			i = c;
+			i = c,
+			randLengths = this.randLengths;
 
 		/**
 		 *	Function that creates rows within a column.
 		**/
 		function rowsCreate (nr) {
-
 
 			// TODO! this function needs a new home. also found in frame.js
 			function getDistance (point1, point2) {
@@ -209,53 +315,6 @@ Frames.prototype = {
 
 				return distanceAB;
 			}
-
-			/**
-			 *	Function that decides all the lenghts of one side of a column.
-			 *
-			 *	Returns array
-			**/
-			function randLength (data) {
-
-
-				var len = rows,
-					i = 0,
-					arr = [],
-					rlen,
-					basepart = 0,
-					sum = 0,
-					leftOverAdd = 0;
-
-				for (i; i < len; i++) {
-
-					if (sum >= data.length) {
-
-						console.log("__________________________________");
-						console.log("sum is now larger than total length of side!");
-						console.log("____________________________________");
-
-					} else if (i == (len - 1)) {
-
-						arr.push(data.length - sum);
-
-					} else {
-
-						basepart = data.part;
-
-						rlen = rand((data.add / 2), (data.add + leftOverAdd));
-
-						leftOverAdd += (data.add - rlen);
-
-						sum += (basepart + rlen);
-
-						arr.push(basepart + rlen);
-
-					}
-				}
-				return arr;
-			}
-
-
 
 			var rows = rowCount[nr],
 				spacingNr = (rows - 1),
@@ -287,9 +346,9 @@ Frames.prototype = {
 
 			lengths[nr] = {
 				left: 
-					randLength(leftData), 
+					randLengths(leftData, rows), 
 				right:
-					randLength(rightData)
+					randLengths(rightData, rows)
 			};
 		}
 

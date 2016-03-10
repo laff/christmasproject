@@ -177,6 +177,8 @@ Bounds.prototype = {
 	**/
 	frameup: function () {
 
+		console.log("frameup is called!");
+
 
 		// The first information to consider is the dimensions available.
 		//
@@ -200,6 +202,8 @@ Bounds.prototype = {
 		 *	- 'square' : squareish rectangle.
 		 *
 		 * TODO! Decide on moving variables somewhere central (squarish and types)
+		 *
+		 *
 		**/
 		function categorize () {
 			// if the width is 20% (of width) longer than the height,
@@ -237,6 +241,8 @@ Bounds.prototype = {
 		 *	
 		**/
 		function grid () {
+
+			console.log("Grid() needs change its game up! Adjusting for screen..");
 
 			var columnCount = Math.floor(Math.sqrt(imageCount)),
 				columns = [],
@@ -292,7 +298,13 @@ Bounds.prototype = {
 		}
 
 		// sorting images
-		return categorize();
+		//categorize();
+
+		var g = grid();
+
+		console.log(g);
+
+		return [2, 3, 2];//grid(); 
 	},
 
 	// TODO! track down all the pattern related information that is doubled up.
