@@ -18,6 +18,8 @@ function Bounds () {
 	this.sHeight = null;
 	this.sWidth = null;
 
+	this.orientation = null;
+
 	// These are the window viewport values.
 	// use this to responsify the created svg size!
 	this.iHeight = null;
@@ -89,6 +91,8 @@ Bounds.prototype = {
 
 		this.iHeight = window.innerHeight;
 		this.iWidth = window.innerWidth;
+
+		this.orientation = (Math.floor(this.iHeight / this.iWidth)) ? "vertical" : "horizontal";
 
 		// TODO! figure out the best way to do these things.
 		// send variables to svg, not tell svg to pick them up here?
@@ -179,7 +183,6 @@ Bounds.prototype = {
 
 		console.log("frameup is called!");
 
-
 		// The first information to consider is the dimensions available.
 		//
 		// What picture fits where?
@@ -190,7 +193,8 @@ Bounds.prototype = {
 			height = (this.iHeight - border*2),
 			images = this.images,
 			imageCount = images.length,
-			gridArr;
+			gridArr,
+			orientation = this.orientation;
 
 
 		/**
@@ -202,8 +206,8 @@ Bounds.prototype = {
 		 *	- 'square' : squareish rectangle.
 		 *
 		 * TODO! Decide on moving variables somewhere central (squarish and types)
-		 *
-		 *
+		 *	
+		 *	NOT IN USE
 		**/
 		function categorize () {
 			// if the width is 20% (of width) longer than the height,
@@ -242,14 +246,30 @@ Bounds.prototype = {
 		**/
 		function grid () {
 
-			console.log("Grid() needs change its game up! Adjusting for screen..");
-
-			var columnCount = Math.floor(Math.sqrt(imageCount)),
+			var columnCount, //getColumnCount(),//Math.floor(Math.sqrt(imageCount)),
+				minRows, //getMinRows(),
 				columns = [],
-				cc = columnCount,
-				imgC = (imageCount - (columnCount * 2)),
+				cc,// = columnCount,
+				imgC,// = (imageCount - (columnCount * 2)),
 				tmp;
 
+
+			var divider = Math.floor(Math.sqrt(imageCount));
+
+			if (orientation == "horizontal") {
+
+				minRows = divider;
+				columnCount = Math.floor(imageCount / divider);
+
+			} else {
+
+				columnCount = divider;
+				minRows = Math.floor(imageCount / divider);
+				
+			}
+
+			imgC = (imageCount - (columnCount * minRows));
+			cc = columnCount;
 
 			/**
 			 *	gets the current framecount
@@ -277,7 +297,7 @@ Bounds.prototype = {
 
 				while (i--) {
 
-					tmp = (imgC < 2) ? imgC : rand(0,2);
+					tmp = (imgC < minRows) ? imgC : rand(0, minRows);
 					columns[i] += tmp;
 					imgC -= tmp;
 				}
@@ -289,7 +309,7 @@ Bounds.prototype = {
 
 			// set row count to the minimum.
 			while (cc--) {
-				columns[cc] = columnCount;
+				columns[cc] = minRows;
 			}
 
 			addRows();
@@ -300,11 +320,7 @@ Bounds.prototype = {
 		// sorting images
 		//categorize();
 
-		var g = grid();
-
-		console.log(g);
-
-		return [2, 3, 2];//grid(); 
+		return grid(); 
 	},
 
 	// TODO! track down all the pattern related information that is doubled up.
