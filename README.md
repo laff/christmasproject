@@ -8,6 +8,5 @@ The status of this project is experimental. Styles and choices made in general a
 # Wishlist
 * Broken glass effect
 * Archer effect
-* GTA effect
 * TVnorge effect?
 * shuffle element picture/background
