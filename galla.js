@@ -19,27 +19,46 @@ function Galla (options) {
 
 	//this.svg = new Svg(options).init();
 
-	this.svg = null;
-
-	this.frame = null
-
-	//this.init();
 }
 
-Galla.prototype.init = function () {
+/**
+ *	TODO!
+ *	Clean up in the logic. Get all classes within the same namespace,
+ *	gather functions that are common blablablabblablabblabla objectify
+**/
+Galla.prototype = {
+
+	frames: null,
+
+	svg: null,
+
+	init: function () {
+		var options = this.options,
+			svg;
 
 
-	var options = this.options,
-		svg;
+		// self executing function that returns a new frame.
+		// the function is passed the creation & setting of the new svg as an argument.
+		// this is evaluated before the function is executed.
+		// making the new Svg available to the frame.
+		this.frames = (function () {
+			
+				return new Frames();
+			}
+		)(this.svg = new Svg(options).init());
+	},
 
 
-	// self executing function that returns a new frame.
-	// the function is passed the creation & setting of the new svg as an argument.
-	// this is evaluated before the function is executed.
-	// making the new Svg available to the frame.
-	this.frames = (function () {
-		
-			return new Frames();
-		}
-	)(this.svg = new Svg(options).init());
+	/**
+	 *
+	**/
+	update: function () {
+
+		this.frames.update();
+
+		// this function is called like this since update() is called within init.....
+		// sigh
+		this.frames.updateFrames();
+
+	}
 }

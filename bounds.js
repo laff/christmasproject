@@ -77,7 +77,7 @@ Bounds.prototype = {
 			setTimeout(function () {
 				bounds.waiting = false;
 				bounds.setInner();
-			}, 500);
+			}, 50);
 		}
 	},
 
@@ -112,9 +112,10 @@ Bounds.prototype = {
 
 			galla.svg.updateDimensions();
 
-			console.log("bounds just called updatedimensions!");
+			this.structure = this.frameup();
 
-			//this.frameup();
+			// new logic related to updating the frame/path locations on resize etc.
+			galla.update();
 		}
 	},
 
@@ -181,8 +182,6 @@ Bounds.prototype = {
 	**/
 	frameup: function () {
 
-		console.log("frameup is called!");
-
 		// The first information to consider is the dimensions available.
 		//
 		// What picture fits where?
@@ -195,7 +194,6 @@ Bounds.prototype = {
 			imageCount = images.length,
 			gridArr,
 			orientation = this.orientation;
-
 
 		/**
 		 *	categorizes images based on their dimensions.

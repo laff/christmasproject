@@ -22,13 +22,13 @@ function Path (anchor, pathStr, fill, dimensions) { //pathStrings) {
 
 	this.fillStr = "url(#" + fill.value.id + ")";
 
-	this.dimensions = dimensions;
+	//this.dimensions = dimensions;
 
 	//this.pathStrings = pathStrings;
 
 	this.element = this.create(pathStr);
 
-	this.adjust();
+	this.adjust(dimensions);
 		
 }
 
@@ -43,9 +43,23 @@ Path.prototype = {
 	},
 
 	/**
+	 *	Method with the goal of upating the path coordinates AND adjust the pattern.
+	**/
+	update: function (anchor, pathStr, dimensions) {
+
+		this.anchor = anchor;
+		
+
+		this.element.setAttributeNS(null, 'd', pathStr);
+
+		this.adjust(dimensions);
+
+	},
+
+	/**
 	 *	Method that adjusts the pattern!
 	**/
-	adjust: function () {
+	adjust: function (dimensions) {
 
 		// console.log("_____________________" +this.fill.id+ "___________________");
 
@@ -69,12 +83,12 @@ Path.prototype = {
 
 
 			// width
-			lw = (this.dimensions.topWidth > this.dimensions.bottomWidth) ?
-				this.dimensions.topWidth : this.dimensions.bottomWidth,
+			lw = (dimensions.topWidth > dimensions.bottomWidth) ?
+				dimensions.topWidth : dimensions.bottomWidth,
 
 			// finding the longest of the frame heights
-			lh = (this.dimensions.leftHeight > this.dimensions.rightHeight) ?
-				this.dimensions.leftHeight : this.dimensions.rightHeight;
+			lh = (dimensions.leftHeight > dimensions.rightHeight) ?
+				dimensions.leftHeight : dimensions.rightHeight;
 
 
 		/**

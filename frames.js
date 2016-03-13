@@ -18,7 +18,10 @@ Frames.prototype = {
 	spacing: 10,
 	border: 50,
 
+	// TODO decide on how to control these properly.
 	frameArr: [],
+
+	tmpFrames: [],
 
 	coordinates: {
 
@@ -33,76 +36,62 @@ Frames.prototype = {
 		//
 		// currently its kind of just a step by step setup
 		// should probably redesign the chain
+		//this.updateNumbers();
+
+		//this.createColumns();
+
+		//this.createRows();
+
+		//this.checkNumbers();
+
+		//this.createFrames();
+
+		this.update();
+
+		var frameArr = this.frameArr,
+			tmpFrames = this.tmpFrames,
+			frameLen = tmpFrames.length;
+
+		while (frameLen--) {
+			frameArr[frameLen] = new Frame(tmpFrames[frameLen]);
+		}
+
+	},
+
+	/**
+	 *	Method that is called when the frame positions must be updated.
+	 *
+	**/
+	update: function () {
+
 		this.updateNumbers();
 
 		this.createColumns();
 
 		this.createRows();
 
-		//this.checkNumbers();
-
 		this.createFrames();
-	},
-
-	checkNumbers: function () {
-
-		// TODO! this function needs a new home. also found in frame.js
-		function getDistance (point1, point2) {
-
-			var A = (point1.x >= point2.x && point1.y >= point2.y) ? point2 : point1,
-				B = (point1.x >= point2.x && point1.y >= point2.y) ? point1 : point2,
-				distanceAB = Math.sqrt((Math.pow((B.x - A.x), 2)) + (Math.pow((B.y - A.y), 2)));
-
-			return distanceAB;
-		}
-
-		var col1lengths = bounds.structure[0],
-			col2lengths = bounds.structure[1],
-			col1spacings = (this.spacing * (col1lengths - 1)),
-			col2spacings = (this.spacing * (col2lengths - 1));
-
-		var col1left = getDistance(this.coordinates.cols[0][0], this.coordinates.cols[0][1]),// - (col1spacings * this.spacing),
-			col1right = getDistance(this.coordinates.cols[0][2], this.coordinates.cols[0][3]),// - (col1spacings * this.spacing),
-			col2left = getDistance(this.coordinates.cols[1][0], this.coordinates.cols[1][1]),// - (col2spacings * this.spacing),
-			col2right = getDistance(this.coordinates.cols[1][2], this.coordinates.cols[1][3]);// - (col2spacings * this.spacing);
-
-
-		console.log("______________________________________________________");
-		console.log("column side lengths (left, right, left, right). spacings included.");
-		console.log(col1left, col1right, col2left, col2right);
-		console.log("______________________________________________________");
-
-
-
-
-
-		var	col1leftlength = col1spacings,//0,//(col1lengths * this.spacing),
-			col1rightlength = col1spacings,//0,//(col1lengths * this.spacing),
-			col2leftlength = col2spacings,//0,//(col2lengths * this.spacing),
-			col2rightlength = col2spacings;//0;//(col2lengths * this.spacing);
-
-
-		for (var i = 0; i < col1lengths; i++) {
-
-			col1leftlength += this.lengths[0].left[i];
-			col1rightlength += this.lengths[0].right[i];
-
-		}
-
-
-		for (var i = 0; i < col2lengths; i++) {
-
-			col2leftlength += this.lengths[1].left[i];
-			col2rightlength += this.lengths[1].right[i];
-
-		}
-
-		console.log("______________________________________________________");
-		console.log("length of frame sides (left, right, left, right)");
-		console.log(col1leftlength, col1rightlength, col2leftlength, col2rightlength);
-		console.log("______________________________________________________");		
 
 	},
+
+	/**
+	 *	Method that is called as a result of galla.update being called on bound resize
+	 *
+	 *	Goal is to update the data related to the frames.
+	**/
+	updateFrames: function () {
+
+		var tmp = this.tmpFrames,
+			frameArr = this.frameArr,
+			len = tmp.length,
+			i = 0;
+
+		for (i; i < len; i++) {
+
+			frameArr[i].update(tmp[i]);
+		}
+	},
+
 
 	/**
 	 *	TODO! decide where to store these numbers....
@@ -374,7 +363,7 @@ Frames.prototype = {
 		var cols = this.coordinates.cols,
 			len = cols.length,
 			lengths = this.lengths,
-			frameArr = this.frameArr,
+			tmpFrames = this.tmpFrames = [],
 			spacing = this.spacing,
 			i = 0;
 
@@ -468,9 +457,7 @@ Frames.prototype = {
 							column[2]				// upper right point of previous 
 							);
 
-					
-
-				frameArr.push(new Frame([p1, p2, p3, p4]));
+				tmpFrames.push([p1, p2, p3, p4]);
 			}
 
 			//frameCreate(column[0], column[3], parts.left[0], parts.right[0]);
@@ -481,9 +468,9 @@ Frames.prototype = {
 			// going through each of the rows
 			for (i; i < rowCount; i++) {
 
-				var lastFrame = frameArr[frameArr.length - 1],
-					leftPoint = (i) ? lastFrame.vertices[1] : column[0],
-					rightPoint = (i) ? lastFrame.vertices[2] : column[3];
+				var lastFrame = tmpFrames[tmpFrames.length - 1],
+					leftPoint = (i) ? lastFrame[1] : column[0],
+					rightPoint = (i) ? lastFrame[2] : column[3];
 
 				frameCreate(leftPoint, rightPoint, parts.left[i], parts.right[i], i);
 			}
@@ -506,4 +493,66 @@ Frames.prototype = {
 	"M361,453 l0,393 l301,0 l0,-393 l-301,0" // lower right
 	"M361,50 l0,393 l301,0 l0,-393 l-301,0", // upper right
 
+*/
+
+/*
+	checkNumbers: function () {
+
+		// TODO! this function needs a new home. also found in frame.js
+		function getDistance (point1, point2) {
+
+			var A = (point1.x >= point2.x && point1.y >= point2.y) ? point2 : point1,
+				B = (point1.x >= point2.x && point1.y >= point2.y) ? point1 : point2,
+				distanceAB = Math.sqrt((Math.pow((B.x - A.x), 2)) + (Math.pow((B.y - A.y), 2)));
+
+			return distanceAB;
+		}
+
+		var col1lengths = bounds.structure[0],
+			col2lengths = bounds.structure[1],
+			col1spacings = (this.spacing * (col1lengths - 1)),
+			col2spacings = (this.spacing * (col2lengths - 1));
+
+		var col1left = getDistance(this.coordinates.cols[0][0], this.coordinates.cols[0][1]),// - (col1spacings * this.spacing),
+			col1right = getDistance(this.coordinates.cols[0][2], this.coordinates.cols[0][3]),// - (col1spacings * this.spacing),
+			col2left = getDistance(this.coordinates.cols[1][0], this.coordinates.cols[1][1]),// - (col2spacings * this.spacing),
+			col2right = getDistance(this.coordinates.cols[1][2], this.coordinates.cols[1][3]);// - (col2spacings * this.spacing);
+
+
+		console.log("______________________________________________________");
+		console.log("column side lengths (left, right, left, right). spacings included.");
+		console.log(col1left, col1right, col2left, col2right);
+		console.log("______________________________________________________");
+
+
+
+
+
+		var	col1leftlength = col1spacings,//0,//(col1lengths * this.spacing),
+			col1rightlength = col1spacings,//0,//(col1lengths * this.spacing),
+			col2leftlength = col2spacings,//0,//(col2lengths * this.spacing),
+			col2rightlength = col2spacings;//0;//(col2lengths * this.spacing);
+
+
+		for (var i = 0; i < col1lengths; i++) {
+
+			col1leftlength += this.lengths[0].left[i];
+			col1rightlength += this.lengths[0].right[i];
+
+		}
+
+
+		for (var i = 0; i < col2lengths; i++) {
+
+			col2leftlength += this.lengths[1].left[i];
+			col2rightlength += this.lengths[1].right[i];
+
+		}
+
+		console.log("______________________________________________________");
+		console.log("length of frame sides (left, right, left, right)");
+		console.log(col1leftlength, col1rightlength, col2leftlength, col2rightlength);
+		console.log("______________________________________________________");		
+
+	},
 */

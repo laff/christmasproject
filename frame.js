@@ -1,5 +1,7 @@
 /**
  *	Class for storing information about a frame.
+ *	
+ *	TODO! DECIDE ONCE AND FOR ALL WHEN TO USE INIT FUNCTIONS
 **/
 function Frame (vertices) {
 
@@ -7,7 +9,7 @@ function Frame (vertices) {
 
 	this.calcDimensions();
 
-	this.createPath();
+	this.createPath(this.createPathStr());
 
 }
 
@@ -50,12 +52,25 @@ Frame.prototype = {
 		}
 	},
 
+
+	/**
+	 *	This method has the task of updating the frame path?
+	 *	Is this really the way I want to do this? 600 function calls?
+	**/
+	update: function (updated) {
+
+		this.vertices = updated;
+
+		this.calcDimensions();
+
+		this.path.update(this.vertices[0], this.createPathStr(), this.dimensions);
+	},
+
 	/**
 	 *	Method that returns a string based on the
 	 *	vertices
 	**/
-	createPath: function () {
-
+	createPathStr: function () {
 		// first assemble the pathstring!
 
 		var vert = this.vertices,
@@ -73,15 +88,27 @@ Frame.prototype = {
 
 		pathStr += 'l' + (vert[len-1].x - vert[0].x) + ',' + (vert[len-1].y - vert[0].y);
 
+		return pathStr;
+	},
+
+	/**
+	 *	Method that creates and stores the path element.
+	 *
+	**/
+	createPath: function (pathStr) {
+
 		this.addPath(new Path(
-						org,
+						this.vertices[0],
 						pathStr,
 						galla.svg.fill.next(),
 						this.dimensions
 					));
 	},
 
-	// function that adds path to svg
+	/**
+	 *	Method that calls the Svg.addPath() method
+	 *	This is to add the newly created path element to the svg.
+	**/
 	addPath: function (path) {
 
 		this.path = path;
