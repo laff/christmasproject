@@ -5,7 +5,7 @@ module.exports = function(grunt) {
 
     concat: {
       options: {
-        separator: ';'
+        separator: '\n'
       },
 
       dist: {
@@ -16,11 +16,23 @@ module.exports = function(grunt) {
           ],
         dest: 'gallerymenu.js'
       }
+    },
+
+    watch: {
+
+      js: {
+        files: 'parts/capsule/*.js',
+        tasks: ['concat']
+      }
+
     }
+
   });
 
   grunt.loadNpmTasks('grunt-contrib-concat');
 
-  grunt.registerTask('default', ['concat']);
+  grunt.loadNpmTasks('grunt-contrib-watch');
+
+  grunt.registerTask('default', ['concat', 'watch']);
 
 };

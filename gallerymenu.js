@@ -1,3 +1,4 @@
+console.log("winner winner chicken dinner");
 /**
  *	Object that controls dimensions / bounds of the svg	
  *
@@ -329,7 +330,8 @@ Bounds.prototype = {
 		this.structure = this.frameup();
 
 	}
-};/**
+}
+/**
  *	defs (and/or pattern?) stuff
 **/
 function Defs (svg) {
@@ -438,7 +440,8 @@ Defs.prototype = {
 		// calling updateDefs to.. update... defs
 		this.updateDefs();
 	}
-};/**
+}
+/**
  *	Class for storing information about a frame.
  *	
  *	TODO! DECIDE ONCE AND FOR ALL WHEN TO USE INIT FUNCTIONS
@@ -572,7 +575,8 @@ Frame.prototype = {
 	"M361,453 l0,393 l301,0 l0,-393 l-301,0" // lower right
 	"M361,50 l0,393 l301,0 l0,-393 l-301,0", // upper right
 
-*/;/**
+*/
+/**
  *	Class that calculates the coordinates of the paths that needs to be created.
 **/
 function Frames () {
@@ -1129,7 +1133,8 @@ Frames.prototype = {
 		console.log("______________________________________________________");		
 
 	},
-*/;/**
+*/
+/**
  *	Mission Control
  *
  *	Stop using "this" in constructor?
@@ -1192,7 +1197,8 @@ Galla.prototype = {
 		this.frames.updateFrames();
 
 	}
-};/**
+}
+/**
  *	Path creation object!
  *
  *
@@ -1456,7 +1462,8 @@ Path.prototype = {
 
 		return path;
 	}
-};/**
+}
+/**
  *	svg stuff
 **/
 function Svg (options) {
@@ -1592,7 +1599,8 @@ Svg.prototype = {
 		this.svg.appendChild(defs);
 
 	}
-};/**
+}
+/**
  *
  *	Initial thoughts /  plan for scriptyfication. aka. STEP 1
  *
