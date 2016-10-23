@@ -6,6 +6,7 @@ DomReady.ready(function () {
 
 	galla = new Galla({
 
+			svgId: "gallery_svg",
 			patterns: [{
 
 				id: 'carl',

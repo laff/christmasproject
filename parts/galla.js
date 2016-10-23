@@ -36,7 +36,6 @@ Galla.prototype = {
 		var options = this.options,
 			svg;
 
-
 		// self executing function that returns a new frame.
 		// the function is passed the creation & setting of the new svg as an argument.
 		// this is evaluated before the function is executed.

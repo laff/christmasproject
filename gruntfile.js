@@ -5,7 +5,7 @@ module.exports = function(grunt) {
 
     concat: {
       options: {
-        separator: '\n'
+        separator: '\n\n\n'
       },
 
       dist: {
@@ -19,14 +19,11 @@ module.exports = function(grunt) {
     },
 
     watch: {
-
       js: {
-        files: 'parts/capsule/*.js',
+        files: ['parts/capsule/*.js','parts/*.js'],
         tasks: ['concat']
       }
-
     }
-
   });
 
   grunt.loadNpmTasks('grunt-contrib-concat');

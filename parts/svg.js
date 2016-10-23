@@ -5,6 +5,8 @@ function Svg (options) {
 
 	this.svg = null;
 
+	this.svgId = options.svgId;
+
 	// The child objects for svg!
 	this.defs = null;
 	this.paths = null;
@@ -64,9 +66,23 @@ Svg.prototype = {
 	/**
 	 *	Creating the SVG element.
 	**/
-	createSvg : function () {
+	createSvg: function () {
 
-		this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+		var svgId = this.svgId;
+
+		if (svgId) {
+			this.svg = document.getElementById(svgId);
+			var nosupport = document.getElementById("nosupport");
+			try {
+				this.svg.removeChild(nosupport);
+			} catch (e) {
+				document.body.removeChild(nosupport);
+				console.log(e);
+			}
+		} else {
+			this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+		}
+
 
 		// initial setting of dimensions.
 		// this needs to be dynamic some day :)

@@ -1,4 +1,6 @@
-console.log("winner winner chicken dinner");
+
+
+
 /**
  *	Object that controls dimensions / bounds of the svg	
  *
@@ -331,6 +333,8 @@ Bounds.prototype = {
 
 	}
 }
+
+
 /**
  *	defs (and/or pattern?) stuff
 **/
@@ -441,6 +445,8 @@ Defs.prototype = {
 		this.updateDefs();
 	}
 }
+
+
 /**
  *	Class for storing information about a frame.
  *	
@@ -576,6 +582,8 @@ Frame.prototype = {
 	"M361,50 l0,393 l301,0 l0,-393 l-301,0", // upper right
 
 */
+
+
 /**
  *	Class that calculates the coordinates of the paths that needs to be created.
 **/
@@ -1134,6 +1142,8 @@ Frames.prototype = {
 
 	},
 */
+
+
 /**
  *	Mission Control
  *
@@ -1172,7 +1182,6 @@ Galla.prototype = {
 		var options = this.options,
 			svg;
 
-
 		// self executing function that returns a new frame.
 		// the function is passed the creation & setting of the new svg as an argument.
 		// this is evaluated before the function is executed.
@@ -1198,6 +1207,8 @@ Galla.prototype = {
 
 	}
 }
+
+
 /**
  *	Path creation object!
  *
@@ -1463,12 +1474,16 @@ Path.prototype = {
 		return path;
 	}
 }
+
+
 /**
  *	svg stuff
 **/
 function Svg (options) {
 
 	this.svg = null;
+
+	this.svgId = options.svgId;
 
 	// The child objects for svg!
 	this.defs = null;
@@ -1529,9 +1544,23 @@ Svg.prototype = {
 	/**
 	 *	Creating the SVG element.
 	**/
-	createSvg : function () {
+	createSvg: function () {
 
-		this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+		var svgId = this.svgId;
+
+		if (svgId) {
+			this.svg = document.getElementById(svgId);
+			var nosupport = document.getElementById("nosupport");
+			try {
+				this.svg.removeChild(nosupport);
+			} catch (e) {
+				document.body.removeChild(nosupport);
+				console.log(e);
+			}
+		} else {
+			this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+		}
+
 
 		// initial setting of dimensions.
 		// this needs to be dynamic some day :)
@@ -1600,6 +1629,8 @@ Svg.prototype = {
 
 	}
 }
+
+
 /**
  *
  *	Initial thoughts /  plan for scriptyfication. aka. STEP 1

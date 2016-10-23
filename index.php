@@ -2,35 +2,22 @@
 <html>
     <head>
 
-        <?php
-        
-        //    echo "<script>";
-        //    include_once "test1.js";
-        //    include_once "test2.js";
-        //    include_once "test3.js";
-        //    echo "</script>";
-
-        ?>
+        <script src="parts/capsule/testing.js"></script>
 
         <script src='domready.js'></script>
 
         <!-- galla menu! -->
         <script src='gallerymenu.js'></script>
-        <!--
-        <script src='bounds.js'></script>
-        <script src='galla.js'></script>
-        <script src='svg.js'></script>
-        <script src='defs.js'></script>
-        <script src='path.js'></script>
-        <script src='frames.js'></script>
-        <script src='frame.js'></script>
-        -->
 
         <!-- script that calls the galla -->
         <script src='script.js'></script>
 
     </head>
     <body style="background-color: black;">
+
+		<svg id="gallery_svg" xmlns="http://www.w3.org/2000/svg">
+			<h4 id="nosupport" style="color: white; text-align:center;"> Your browser does not support SVG.</h4>
+		</svg>
 
     </body>
 </html>
