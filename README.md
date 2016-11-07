@@ -2,7 +2,7 @@
 The status of this project is experimental. Styles and choices made in general are divert.
 
 Please see http://aarseth-berge.com/ for example implementation.
-Resize window to trigger responsive resizing.
+Resize window to trigger "responsiveness".
 
 # Progress
 * GTA effect
