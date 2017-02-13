@@ -73,12 +73,11 @@ Svg.prototype = {
 		if (svgId) {
 			this.svg = document.getElementById(svgId);
 			var nosupport = document.getElementById("nosupport");
-			try {
-				this.svg.removeChild(nosupport);
-			} catch (e) {
-				document.body.removeChild(nosupport);
-				console.log(e);
+
+			if (nosupport.parentNode.tagName === "BODY") {
+				nosupport.parentNode.removeChild(nosupport);
 			}
+
 		} else {
 			this.svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 		}
