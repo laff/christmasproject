@@ -1,35 +1,46 @@
 module.exports = function(grunt) {
 
-  grunt.initConfig({
-    pkg: grunt.file.readJSON('package.json'),
+	grunt.initConfig({
+		pkg: grunt.file.readJSON('package.json'),
 
-    concat: {
-      options: {
-        separator: '\n\n\n'
-      },
 
-      dist: {
-        src: [
-          'parts/capsule/start.js',
-          'parts/*.js',
-          'parts/capsule/end.js'
-          ],
-        dest: 'gallerymenu.js'
-      }
-    },
 
-    watch: {
-      js: {
-        files: ['parts/capsule/*.js','parts/*.js'],
-        tasks: ['concat']
-      }
-    }
-  });
+		concat: {
+			options: {
+				separator: '\n\n\n'
+			},
 
-  grunt.loadNpmTasks('grunt-contrib-concat');
+			dist: {
+				src: [
+					'parts/capsule/start.js',
+					'parts/*.js',
+					'parts/capsule/end.js'
+				],
+					dest: 'gallerymenu.js'
+				}
+			},
 
-  grunt.loadNpmTasks('grunt-contrib-watch');
+			uglify: {
+				build: {
+					src: 'gallerymenu.js',
+					dest: 'gallerymenu.min.js'
+				}
+			},
 
-  grunt.registerTask('default', ['concat', 'watch']);
+			watch: {
+				js: {
+					files: ['parts/capsule/*.js','parts/*.js'],
+					tasks: ['concat']
+				}
+			}
+		});
+
+	grunt.loadNpmTasks('grunt-contrib-concat');
+
+	grunt.loadNpmTasks('grunt-contrib-watch');
+
+	grunt.loadNpmTasks('grunt-contrib-uglify');
+
+	grunt.registerTask('default', ['concat', 'watch', 'uglify']);
 
 };
