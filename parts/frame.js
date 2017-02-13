@@ -100,7 +100,7 @@ Frame.prototype = {
 		this.addPath(new Path(
 						this.vertices[0],
 						pathStr,
-						galla.svg.fill.next(),
+						galla.svg.fill.get(),
 						this.dimensions
 					));
 	},

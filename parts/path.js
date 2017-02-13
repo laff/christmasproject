@@ -18,9 +18,9 @@ function Path (anchor, pathStr, fill, dimensions) { //pathStrings) {
 
 	this.anchor = anchor;
 
-	this.fill = fill.value;
+	this.fill = fill;
 
-	this.fillStr = "url(#" + fill.value.id + ")";
+	this.fillStr = "url(#" + fill.id + ")";
 
 	//this.dimensions = dimensions;
 

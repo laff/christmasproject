@@ -381,13 +381,17 @@ Defs.prototype = {
 	 *	Generator function that returns a new fill id!
 	 *
 	**/
-	fillGen: function* () {
+	fillGen: function () {
 
-		var i = this.patternCount,
-			id;
-
-		while (i--) {
-			yield this.patterns[i];
+		var c = this.patternCount,
+			i = 0,
+			id,
+			patterns = this.patterns;
+			
+		return {
+			get: function () {
+				return patterns[i++];
+			}
 		}
 	},
 
@@ -549,7 +553,7 @@ Frame.prototype = {
 		this.addPath(new Path(
 						this.vertices[0],
 						pathStr,
-						galla.svg.fill.next(),
+						galla.svg.fill.get(),
 						this.dimensions
 					));
 	},
@@ -1229,9 +1233,9 @@ function Path (anchor, pathStr, fill, dimensions) { //pathStrings) {
 
 	this.anchor = anchor;
 
-	this.fill = fill.value;
+	this.fill = fill;
 
-	this.fillStr = "url(#" + fill.value.id + ")";
+	this.fillStr = "url(#" + fill.id + ")";
 
 	//this.dimensions = dimensions;
 

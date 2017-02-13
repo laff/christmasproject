@@ -44,13 +44,17 @@ Defs.prototype = {
 	 *	Generator function that returns a new fill id!
 	 *
 	**/
-	fillGen: function* () {
+	fillGen: function () {
 
-		var i = this.patternCount,
-			id;
-
-		while (i--) {
-			yield this.patterns[i];
+		var c = this.patternCount,
+			i = 0,
+			id,
+			patterns = this.patterns;
+			
+		return {
+			get: function () {
+				return patterns[i++];
+			}
 		}
 	},
 
